@@ -197,10 +197,10 @@ namespace HUD_Claude
                     }
 
                     // Draw the marker line
-                    float x1 = CENTER_X + (float)((arcRadius - markerLength) * Math.Cos(radians));
-                    float y1 = CENTER_Y + (float)((arcRadius - markerLength) * Math.Sin(radians));
-                    float x2 = CENTER_X + (float)(arcRadius * Math.Cos(radians));
-                    float y2 = CENTER_Y + (float)(arcRadius * Math.Sin(radians));
+                    float x1 = CENTER_X - (float)((arcRadius - markerLength) * Math.Cos(radians));
+                    float y1 = CENTER_Y - (float)((arcRadius - markerLength) * Math.Sin(radians));
+                    float x2 = CENTER_X - (float)(arcRadius * Math.Cos(radians));
+                    float y2 = CENTER_Y - (float)(arcRadius * Math.Sin(radians));
                     g.DrawLine(pen, x1, y1, x2, y2);
 
                     // Add labels for 30-degree markers
@@ -209,8 +209,8 @@ namespace HUD_Claude
                         using (var font = new Font("Arial", 8))
                         {
                             string text = Math.Abs(angle).ToString();
-                            float textX = CENTER_X + (float)((arcRadius - markerLength - 15) * Math.Cos(radians)) - 8;
-                            float textY = CENTER_Y + (float)((arcRadius - markerLength - 15) * Math.Sin(radians)) - 6;
+                            float textX = CENTER_X - (float)((arcRadius - markerLength - 15) * Math.Cos(radians)) - 8;
+                            float textY = CENTER_Y - (float)((arcRadius - markerLength - 15) * Math.Sin(radians)) - 6;
                             g.DrawString(text, font, Brushes.White, textX, textY);
                         }
                     }
@@ -244,7 +244,7 @@ namespace HUD_Claude
             //    g.DrawLine(pen, CENTER_X, CENTER_Y - indicatorRadius, x, y);
             //}
 
-            // Draw roll indicator
+            //Draw roll indicator
             //float rollRadians = -roll * (float)Math.PI / 180;
             //using (var pen = new Pen(Color.Yellow, 3))
             //{
@@ -271,7 +271,7 @@ namespace HUD_Claude
             //    }
             //}
 
-            // Draw pitch indicator on the arc
+            //Draw pitch indicator on the arc
             //float pitchArcAngle = (pitch + 90) * (float)Math.PI / 180;
             //using (var pen = new Pen(Color.Yellow, 3))
             //{
