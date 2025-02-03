@@ -10,9 +10,15 @@ using System.Windows.Forms;
 
 namespace HUD_Claude
 {
-    public partial class HUD : Form
+    [ToolboxItem(true)]
+    public partial class HUDControl : UserControl
     {
-
+    //    public HUDControl()
+    //    {
+    //        InitializeComponent();
+    //    }
+    //}
+    
         private float pitch = 0; // Degrees, positive is nose up
         private float roll = 0;  // Degrees, positive is right roll
         private Timer updateTimer;
@@ -21,134 +27,128 @@ namespace HUD_Claude
         private const int RADIUS = 150;
         private const float PITCH_SCALING = 4; // Pixels per degree of pitch
 
-        public HUD()
+        public HUDControl()
         {
-            
-          
-                this.ClientSize = new Size(400, 400);
+
+
+            this.ClientSize = new Size(400, 400);
             this.DoubleBuffered = true;
 
-                updateTimer = new Timer();
-                updateTimer.Interval = 50; // 20 FPS
-                updateTimer.Tick += UpdateTimer_Tick;
-                updateTimer.Start();
+            //updateTimer = new Timer();
+            //updateTimer.Interval = 50; // 20 FPS
+            //updateTimer.Tick += UpdateTimer_Tick;
+            //updateTimer.Start();
 
-                this.KeyPreview = true;
-                this.KeyDown += HorizonIndicator_KeyDown;
-            }
+            //this.KeyPreview = true;
+            //this.KeyDown += HorizonIndicator_KeyDown;
+        }
 
-            private void HorizonIndicator_KeyDown(object sender, KeyEventArgs e)
-            {
-                switch (e.KeyCode)
-                {
-                    case Keys.Up:
-                        pitch = Math.Min(pitch + 5, 90);
-                        break;
-                    case Keys.Down:
-                        pitch = Math.Max(pitch - 5, -90);
-                        break;
-                    case Keys.Left:
-                        roll = Math.Max(roll - 5, -180);
-                        break;
-                    case Keys.Right:
-                        roll = Math.Min(roll + 5, 180);
-                        break;
-                    case Keys.Space:
-                        pitch = 0;
-                        roll = 0;
-                        break;
-                }
+
+
+        [Description("Current Pitch in degrees (0-360)")]
+        [Category("Appearance")]
+        [DefaultValue(0f)]
+        public float Pitch
+        {
+            get { return pitch; } set { pitch = value;
+            this.Invalidate();
+            }    
+        }
+        [Description("Current Pitch in degrees (0-360)")]
+        [Category("Appearance")]
+        [DefaultValue(0f)]
+        public float Roll
+        {
+            get { return roll; }
+            set { roll = value;
                 this.Invalidate();
             }
+            
+        }
 
-            private void UpdateTimer_Tick(object sender, EventArgs e)
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            g.Clear(Color.Black);
+
+            // Save the current state
+            var state = g.Save();
+
+            // Move to center
+            g.TranslateTransform(CENTER_X, CENTER_Y);
+
+            // Apply roll rotation
+            g.RotateTransform(-roll);
+
+            // Calculate pitch offset
+            float pitchOffset = pitch * PITCH_SCALING;
+
+            // Create clip region for horizon mask
+            using (var path = new System.Drawing.Drawing2D.GraphicsPath())
             {
-                this.Invalidate();
+                path.AddEllipse(-RADIUS, -RADIUS, RADIUS * 2, RADIUS * 2);
+                g.SetClip(path);
             }
 
-            protected override void OnPaint(PaintEventArgs e)
+            // Draw sky and ground
+            using (var skyBrush = new SolidBrush(Color.SkyBlue))
+            using (var groundBrush = new SolidBrush(Color.SaddleBrown))
             {
-                Graphics g = e.Graphics;
-                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                g.Clear(Color.Black);
+                // Fill sky (top half)
+                g.FillRectangle(skyBrush, -RADIUS, -RADIUS - pitchOffset, RADIUS * 2, RADIUS * 2);
 
-                // Save the current state
-                var state = g.Save();
+                // Fill ground (bottom half)
+                g.FillRectangle(groundBrush, -RADIUS, -pitchOffset, RADIUS * 2, RADIUS * 2);
+            }
 
-                // Move to center
-                g.TranslateTransform(CENTER_X, CENTER_Y);
+            // Draw pitch lines
+            using (var pen = new Pen(Color.White, 2))
+            {
+                // Draw horizon line
+                g.DrawLine(pen, -RADIUS, -pitchOffset, RADIUS, -pitchOffset);
 
-                // Apply roll rotation
-                g.RotateTransform(-roll);
-
-                // Calculate pitch offset
-                float pitchOffset = pitch * PITCH_SCALING;
-
-                // Create clip region for horizon mask
-                using (var path = new System.Drawing.Drawing2D.GraphicsPath())
+                // Draw pitch reference lines
+                for (int i = -90; i <= 90; i += 10)
                 {
-                    path.AddEllipse(-RADIUS, -RADIUS, RADIUS * 2, RADIUS * 2);
-                    g.SetClip(path);
-                }
+                    if (i == 0) continue; // Skip horizon line
 
-                // Draw sky and ground
-                using (var skyBrush = new SolidBrush(Color.SkyBlue))
-                using (var groundBrush = new SolidBrush(Color.SaddleBrown))
-                {
-                    // Fill sky (top half)
-                    g.FillRectangle(skyBrush, -RADIUS, -RADIUS - pitchOffset, RADIUS * 2, RADIUS * 2);
+                    float y = -pitchOffset - (i * PITCH_SCALING);
 
-                    // Fill ground (bottom half)
-                    g.FillRectangle(groundBrush, -RADIUS, -pitchOffset, RADIUS * 2, RADIUS * 2);
-                }
-
-                // Draw pitch lines
-                using (var pen = new Pen(Color.White, 2))
-                {
-                    // Draw horizon line
-                    g.DrawLine(pen, -RADIUS, -pitchOffset, RADIUS, -pitchOffset);
-
-                    // Draw pitch reference lines
-                    for (int i = -90; i <= 90; i += 10)
+                    // Only draw lines that are within view
+                    if (y > -RADIUS && y < RADIUS)
                     {
-                        if (i == 0) continue; // Skip horizon line
+                        int lineLength = (i % 30 == 0) ? 60 : 30;
+                        g.DrawLine(pen, -lineLength, y, lineLength, y);
 
-                        float y = -pitchOffset - (i * PITCH_SCALING);
-
-                        // Only draw lines that are within view
-                        if (y > -RADIUS && y < RADIUS)
+                        // Draw degree numbers
+                        using (var font = new Font("Arial", 8))
                         {
-                            int lineLength = (i % 30 == 0) ? 60 : 30;
-                            g.DrawLine(pen, -lineLength, y, lineLength, y);
-
-                            // Draw degree numbers
-                            using (var font = new Font("Arial", 8))
-                            {
-                                string text = Math.Abs(i).ToString();
-                                g.DrawString(text, font, Brushes.White, -lineLength - 20, y - 6);
-                                g.DrawString(text, font, Brushes.White, lineLength + 5, y - 6);
-                            }
+                            string text = Math.Abs(i).ToString();
+                            g.DrawString(text, font, Brushes.White, -lineLength - 20, y - 6);
+                            g.DrawString(text, font, Brushes.White, lineLength + 5, y - 6);
                         }
                     }
                 }
+            }
 
-                // Restore graphics state
-                g.Restore(state);
+            // Restore graphics state
+            g.Restore(state);
 
-                // Draw fixed elements after restoring the state
-                // Draw circular mask
-                using (var pen = new Pen(Color.White, 3))
-                {
-                    g.DrawEllipse(pen, CENTER_X - RADIUS, CENTER_Y - RADIUS, RADIUS * 2, RADIUS * 2);
-                }
+            // Draw fixed elements after restoring the state
+            // Draw circular mask
+            using (var pen = new Pen(Color.White, 3))
+            {
+                g.DrawEllipse(pen, CENTER_X - RADIUS, CENTER_Y - RADIUS, RADIUS * 2, RADIUS * 2);
+            }
 
-                // Draw fixed aircraft reference
-                using (var pen = new Pen(Color.Yellow, 3))
-                {
-                    g.DrawLine(pen, CENTER_X - 50, CENTER_Y, CENTER_X - 15, CENTER_Y);
-                    g.DrawLine(pen, CENTER_X + 15, CENTER_Y, CENTER_X + 50, CENTER_Y);
-                    g.DrawLine(pen, CENTER_X, CENTER_Y - 15, CENTER_X, CENTER_Y + 15);
-                }
+            // Draw fixed aircraft reference
+            using (var pen = new Pen(Color.Yellow, 3))
+            {
+                g.DrawLine(pen, CENTER_X - 50, CENTER_Y, CENTER_X - 15, CENTER_Y);
+                g.DrawLine(pen, CENTER_X + 15, CENTER_Y, CENTER_X + 50, CENTER_Y);
+                g.DrawLine(pen, CENTER_X, CENTER_Y - 15, CENTER_X, CENTER_Y + 15);
+            }
 
             // Draw roll indicator arc and marks
             using (var pen = new Pen(Color.White, 2))
@@ -282,11 +282,11 @@ namespace HUD_Claude
 
             // Draw pitch and roll values
             using (var font = new Font("Arial", 10))
-                {
-                    g.DrawString($"Pitch: {pitch:F1}°", font, Brushes.White, 10, 10);
-                    g.DrawString($"Roll: {roll:F1}°", font, Brushes.White, 10, 30);
-                }
-
+            {
+                g.DrawString($"Pitch: {pitch:F1}°", font, Brushes.White, 10, 10);
+                g.DrawString($"Roll: {roll:F1}°", font, Brushes.White, 10, 30);
             }
+
         }
     }
+}

@@ -16,7 +16,10 @@ namespace HUD_Claude
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new HUD());
+            Application.Run(new MainForm()
+            {
+
+            });
         }
     }
 }
