@@ -12,23 +12,15 @@ namespace HUD_Claude
 {
     public partial class MainForm : Form
     {
-        private Timer updateTimer;
         private float pitch = 0; // Degrees, positive is nose up
         private float roll = 0;  // Degrees, positive is right roll
         public MainForm()
         {
             InitializeComponent();
-            
-            //this.ClientSize = new System.Drawing.Size(1013, 450);
+         
             this.DoubleBuffered = true;
 
-            //updateTimer = new Timer();
-            //updateTimer.Interval = 50; // 20 FPS
-            //updateTimer.Tick += UpdateTimer_Tick;
-            //updateTimer.Start();
-
-            //this.KeyPreview = true;
-            //this.KeyDown += MainForm_KeyDown;
+            
 
         }
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -56,10 +48,7 @@ namespace HUD_Claude
             hudControl1.Roll = roll;
             compassControl1.Heading = pitch;
             return base.ProcessCmdKey(ref msg, keyData);
-           
-
-            //System.Diagnostics.Debug.WriteLine(pitch);
-            //compassControl1.Invalidate();
+          
         }
 
        

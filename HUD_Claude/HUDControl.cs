@@ -21,7 +21,6 @@ namespace HUD_Claude
     
         private float pitch = 0; // Degrees, positive is nose up
         private float roll = 0;  // Degrees, positive is right roll
-        private Timer updateTimer;
         private const int CENTER_X = 200;
         private const int CENTER_Y = 200;
         private const int RADIUS = 150;
@@ -33,14 +32,6 @@ namespace HUD_Claude
 
             this.ClientSize = new Size(400, 400);
             this.DoubleBuffered = true;
-
-            //updateTimer = new Timer();
-            //updateTimer.Interval = 50; // 20 FPS
-            //updateTimer.Tick += UpdateTimer_Tick;
-            //updateTimer.Start();
-
-            //this.KeyPreview = true;
-            //this.KeyDown += HorizonIndicator_KeyDown;
         }
 
 
@@ -96,7 +87,7 @@ namespace HUD_Claude
             using (var groundBrush = new SolidBrush(Color.SaddleBrown))
             {
                 // Fill sky (top half)
-                g.FillRectangle(skyBrush, -RADIUS, -RADIUS - pitchOffset, RADIUS * 2, RADIUS * 2);
+                g.FillRectangle(skyBrush, -RADIUS, -RADIUS, RADIUS * 2, RADIUS * 2);
 
                 // Fill ground (bottom half)
                 g.FillRectangle(groundBrush, -RADIUS, -pitchOffset, RADIUS * 2, RADIUS * 2);

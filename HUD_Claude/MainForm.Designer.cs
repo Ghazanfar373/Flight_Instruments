@@ -28,10 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.label1 = new System.Windows.Forms.Label();
             this.hudControl1 = new HUD_Claude.HUDControl();
             this.compassControl1 = new HUD_Claude.CompassControl();
-            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(23, 453);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(228, 16);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "* Use Keyboard Arrow Keys for inputs";
             // 
             // hudControl1
             // 
@@ -49,15 +58,6 @@
             this.compassControl1.Size = new System.Drawing.Size(400, 400);
             this.compassControl1.TabIndex = 0;
             this.compassControl1.Text = "compassControl1";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(23, 453);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(228, 16);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "* Use Keyboard Arrow Keys for inputs";
             // 
             // MainForm
             // 
