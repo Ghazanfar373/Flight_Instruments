@@ -28,16 +28,16 @@ namespace HUD_Claude
             switch (keyData)
             {
                 case Keys.Up:
-                    pitch = Math.Min(pitch + 5, 90);
+                    pitch = Math.Min(pitch + 1, 90);
                     break;
                 case Keys.Down:
-                    pitch = Math.Max(pitch - 5, -90);
+                    pitch = Math.Max(pitch - 1, -90);
                     break;
                 case Keys.Left:
-                    roll = Math.Max(roll - 5, -180);
+                    roll = Math.Max(roll - 1, -180);
                     break;
                 case Keys.Right:
-                    roll = Math.Min(roll + 5, 180);
+                    roll = Math.Min(roll + 1, 180);
                     break;
                 case Keys.Space:
                     pitch = 0;
@@ -47,6 +47,9 @@ namespace HUD_Claude
             hudControl1.Pitch = pitch;
             hudControl1.Roll = roll;
             compassControl1.Heading = pitch;
+
+            horizonIndicator1.Pitch = pitch;
+            horizonIndicator1.Roll = roll;  
             return base.ProcessCmdKey(ref msg, keyData);
           
         }

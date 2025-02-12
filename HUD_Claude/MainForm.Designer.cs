@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
+            this.horizonIndicator1 = new HUD_Claude.HorizonIndicator();
             this.hudControl1 = new HUD_Claude.HUDControl();
             this.compassControl1 = new HUD_Claude.CompassControl();
             this.SuspendLayout();
@@ -42,26 +43,38 @@
             this.label1.TabIndex = 5;
             this.label1.Text = "* Use Keyboard Arrow Keys for inputs";
             // 
+            // horizonIndicator1
+            // 
+            this.horizonIndicator1.Location = new System.Drawing.Point(897, 79);
+            this.horizonIndicator1.MinimumSize = new System.Drawing.Size(200, 200);
+            this.horizonIndicator1.Name = "horizonIndicator1";
+            this.horizonIndicator1.Pitch = 0F;
+            this.horizonIndicator1.Roll = 0F;
+            this.horizonIndicator1.Size = new System.Drawing.Size(209, 220);
+            this.horizonIndicator1.TabIndex = 6;
+            // 
             // hudControl1
             // 
-            this.hudControl1.Location = new System.Drawing.Point(19, 25);
+            this.hudControl1.Location = new System.Drawing.Point(12, 27);
             this.hudControl1.Name = "hudControl1";
-            this.hudControl1.Size = new System.Drawing.Size(400, 400);
+            this.hudControl1.Size = new System.Drawing.Size(407, 398);
             this.hudControl1.TabIndex = 4;
             // 
             // compassControl1
             // 
             this.compassControl1.BackColor = System.Drawing.Color.Black;
             this.compassControl1.ForeColor = System.Drawing.Color.White;
-            this.compassControl1.Location = new System.Drawing.Point(431, 24);
+            this.compassControl1.Heading = 0F;
+            this.compassControl1.Location = new System.Drawing.Point(669, 79);
             this.compassControl1.Name = "compassControl1";
-            this.compassControl1.Size = new System.Drawing.Size(400, 400);
+            this.compassControl1.Size = new System.Drawing.Size(222, 220);
             this.compassControl1.TabIndex = 0;
             this.compassControl1.Text = "compassControl1";
             // 
             // MainForm
             // 
-            this.ClientSize = new System.Drawing.Size(860, 500);
+            this.ClientSize = new System.Drawing.Size(1216, 623);
+            this.Controls.Add(this.horizonIndicator1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.hudControl1);
             this.Controls.Add(this.compassControl1);
@@ -77,5 +90,6 @@
         private CompassControl compassControl1;
         private HUDControl hudControl1;
         private System.Windows.Forms.Label label1;
+        private HorizonIndicator horizonIndicator1;
     }
 }

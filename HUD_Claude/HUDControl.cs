@@ -13,11 +13,7 @@ namespace HUD_Claude
     [ToolboxItem(true)]
     public partial class HUDControl : UserControl
     {
-    //    public HUDControl()
-    //    {
-    //        InitializeComponent();
-    //    }
-    //}
+    
     
         private float pitch = 0; // Degrees, positive is nose up
         private float roll = 0;  // Degrees, positive is right roll
@@ -218,7 +214,7 @@ namespace HUD_Claude
         CENTER_Y - arcRadius + 15,
         CENTER_Y - arcRadius + 15
     };
-                g.FillPolygon(Brushes.White, new PointF[] {
+                g.FillPolygon(Brushes.Red, new PointF[] {
         new PointF(triangleXPoints[0], triangleYPoints[0]),
         new PointF(triangleXPoints[1], triangleYPoints[1]),
         new PointF(triangleXPoints[2], triangleYPoints[2])
