@@ -46,7 +46,7 @@ namespace HUD_Claude
             }
             hudControl1.Pitch = pitch;
             hudControl1.Roll = roll;
-            compassControl1.Heading = pitch;
+            compassControl1.Heading = roll;
 
             horizonIndicator1.Pitch = pitch;
             horizonIndicator1.Roll = roll;  
