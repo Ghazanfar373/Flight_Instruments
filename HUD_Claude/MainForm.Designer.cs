@@ -32,6 +32,7 @@
             this.horizonIndicator1 = new HUD_Claude.HorizonIndicator();
             this.hudControl1 = new HUD_Claude.HUDControl();
             this.compassControl1 = new HUD_Claude.CompassControl();
+            this.compassControl2 = new HUD_Claude.CompassControl();
             this.SuspendLayout();
             // 
             // label1
@@ -71,9 +72,20 @@
             this.compassControl1.TabIndex = 0;
             this.compassControl1.Text = "compassControl1";
             // 
+            // compassControl2
+            // 
+            this.compassControl2.BackColor = System.Drawing.Color.Black;
+            this.compassControl2.Heading = 0F;
+            this.compassControl2.Location = new System.Drawing.Point(514, 79);
+            this.compassControl2.Name = "compassControl2";
+            this.compassControl2.Size = new System.Drawing.Size(327, 326);
+            this.compassControl2.TabIndex = 7;
+            this.compassControl2.Text = "compassControl2";
+            // 
             // MainForm
             // 
             this.ClientSize = new System.Drawing.Size(1216, 623);
+            this.Controls.Add(this.compassControl2);
             this.Controls.Add(this.horizonIndicator1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.hudControl1);
@@ -91,5 +103,6 @@
         private HUDControl hudControl1;
         private System.Windows.Forms.Label label1;
         private HorizonIndicator horizonIndicator1;
+        private CompassControl compassControl2;
     }
 }

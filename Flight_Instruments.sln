@@ -11,6 +11,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCases", "TestCases\Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightInstrument_Net48", "FlightInstrument_Net48\FlightInstrument_Net48.csproj", "{996ADC6C-2587-46CD-8AD6-CCD71FAFB0E1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{DA61CA54-70EF-4394-A382-6E2CDE72A347}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Pictures\compass.jpg = ..\..\..\Pictures\compass.jpg
+		..\..\..\Pictures\horizontal.jpg = ..\..\..\Pictures\horizontal.jpg
+		..\..\..\Pictures\Hud_Compass.jpg = ..\..\..\Pictures\Hud_Compass.jpg
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

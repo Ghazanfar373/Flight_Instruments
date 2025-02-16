@@ -11,11 +11,6 @@ namespace TestCases
 
 
 
-        //New test cases add flightinstruments.dll file into SErbC2I for detail testing
-
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
         [STAThread]
         static void Main()
         {
