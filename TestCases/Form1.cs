@@ -8,16 +8,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace HUD_Claude
+namespace TestCases
 {
-    public partial class MainForm : Form
+    public partial class Form1 : Form
     {
+
         private float pitch = 0; // Degrees, positive is nose up
         private float roll = 0;  // Degrees, positive is right roll
-        public MainForm()
+        public Form1()
         {
             InitializeComponent();
-            this.DoubleBuffered = true;
         }
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
@@ -40,15 +40,18 @@ namespace HUD_Claude
                     roll = 0;
                     break;
             }
-            hudControl1.Pitch = pitch;
-            hudControl1.Roll = roll;
+           
             compassControl1.Heading = roll;
 
             horizonIndicator1.Pitch = pitch;
-            horizonIndicator1.Roll = roll;  
+            horizonIndicator1.Roll = roll;
             return base.ProcessCmdKey(ref msg, keyData);
+
         }
 
-       
+        private void horizonIndicator1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

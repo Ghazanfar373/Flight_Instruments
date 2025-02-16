@@ -45,12 +45,12 @@
             // 
             // horizonIndicator1
             // 
-            this.horizonIndicator1.Location = new System.Drawing.Point(897, 79);
+            this.horizonIndicator1.Location = new System.Drawing.Point(872, 53);
             this.horizonIndicator1.MinimumSize = new System.Drawing.Size(200, 200);
             this.horizonIndicator1.Name = "horizonIndicator1";
             this.horizonIndicator1.Pitch = 0F;
             this.horizonIndicator1.Roll = 0F;
-            this.horizonIndicator1.Size = new System.Drawing.Size(209, 220);
+            this.horizonIndicator1.Size = new System.Drawing.Size(250, 250);
             this.horizonIndicator1.TabIndex = 6;
             // 
             // hudControl1
@@ -65,9 +65,9 @@
             this.compassControl1.BackColor = System.Drawing.Color.Black;
             this.compassControl1.ForeColor = System.Drawing.Color.White;
             this.compassControl1.Heading = 0F;
-            this.compassControl1.Location = new System.Drawing.Point(669, 79);
+            this.compassControl1.Location = new System.Drawing.Point(872, 295);
             this.compassControl1.Name = "compassControl1";
-            this.compassControl1.Size = new System.Drawing.Size(222, 220);
+            this.compassControl1.Size = new System.Drawing.Size(250, 250);
             this.compassControl1.TabIndex = 0;
             this.compassControl1.Text = "compassControl1";
             // 

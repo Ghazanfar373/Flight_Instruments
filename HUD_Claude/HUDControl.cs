@@ -13,8 +13,8 @@ namespace HUD_Claude
     [ToolboxItem(true)]
     public partial class HUDControl : UserControl
     {
-    
-    
+
+
         private float pitch = 0; // Degrees, positive is nose up
         private float roll = 0;  // Degrees, positive is right roll
         private const int CENTER_X = 200;
@@ -38,8 +38,8 @@ namespace HUD_Claude
         public float Pitch
         {
             get { return pitch; } set { pitch = value;
-            this.Invalidate();
-            }    
+                this.Invalidate();
+            }
         }
         [Description("Current Pitch in degrees (0-360)")]
         [Category("Appearance")]
@@ -50,7 +50,7 @@ namespace HUD_Claude
             set { roll = value;
                 this.Invalidate();
             }
-            
+
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -130,7 +130,7 @@ namespace HUD_Claude
             }
 
             // Draw fixed aircraft reference
-            using (var pen = new Pen(Color.Yellow, 3))
+            using (var pen = new Pen(Color.Yellow, 5))
             {
                 g.DrawLine(pen, CENTER_X - 50, CENTER_Y, CENTER_X - 15, CENTER_Y);
                 g.DrawLine(pen, CENTER_X + 15, CENTER_Y, CENTER_X + 50, CENTER_Y);
@@ -141,94 +141,133 @@ namespace HUD_Claude
             //using (var pen = new Pen(Color.Wheat, 2))
             //{
             //    // Draw roll arc inside the horizon at the top
-            //    int arcRadius = RADIUS - 10; // Slightly smaller than main horizon circle
-            //    g.DrawArc(pen, CENTER_X - arcRadius, CENTER_Y - arcRadius, arcRadius * 2, arcRadius * 2, 210, 120);
+            //    int arcRADIUS = RADIUS - 10; // Slightly smaller than main horizon circle
+            //    g.DrawArc(pen, CENTER_X - arcRADIUS, CENTER_Y - arcRADIUS, arcRADIUS * 2, arcRADIUS * 2, 210, 120);
 
             //    // Draw roll markers
             //    for (int angle = -60; angle <= 60; angle += 30)
             //    {
             //        double radians = (angle + 90) * Math.PI / 180; // Offset by 90 to center at top
             //        float markerLength = 10;
-            //        float x1 = CENTER_X + (float)((arcRadius - markerLength) * Math.Cos(radians));
-            //        float y1 = CENTER_Y + (float)((arcRadius - markerLength) * Math.Sin(radians));
-            //        float x2 = CENTER_X + (float)(arcRadius * Math.Cos(radians));
-            //        float y2 = CENTER_Y + (float)(arcRadius * Math.Sin(radians));
+            //        float x1 = CENTER_X + (float)((arcRADIUS - markerLength) * Math.Cos(radians));
+            //        float y1 = CENTER_Y + (float)((arcRADIUS - markerLength) * Math.Sin(radians));
+            //        float x2 = CENTER_X + (float)(arcRADIUS * Math.Cos(radians));
+            //        float y2 = CENTER_Y + (float)(arcRADIUS * Math.Sin(radians));
             //        g.DrawLine(pen, x1, y1, x2, y2);
             //    }
             //}
-            // Draw roll indicator arc and marks
-            using (var pen = new Pen(Color.Wheat, 2))
+            // Replace the roll indicator arc and marker drawing section with:
+            using (var pen = new Pen(Color.Wheat, RADIUS / 75f))
             {
-                // Draw roll arc inside the horizon at the top
-                int arcRadius = RADIUS - 10; // Slightly smaller than main horizon circle
-                g.DrawArc(pen, CENTER_X - arcRadius, CENTER_Y - arcRadius, arcRadius * 2, arcRadius * 2, 210, 120);
+                int arcRADIUS = RADIUS - RADIUS / 10;
 
-                // Draw roll markers and labels
-                for (int angle = -60; angle <= 60; angle += 10) // Changed to 10-degree increments
+                // Draw the fixed roll arc and markers at the top (changed from 210,120 to 30,120)
+                //g.DrawArc(pen, CENTER_X - arcRADIUS, CENTER_Y - arcRADIUS, arcRADIUS * 2, arcRADIUS * 2, 30, 120);
+
+                // Draw the fixed markers on the arc, adjusted angles for top position
+                for (int angle = -60; angle <= 60; angle += 10)
                 {
-                    double radians = (angle + 90) * Math.PI / 180; // Offset by 90 to center at top
+                    double radians = (-angle + 90) * Math.PI / 180; // Changed angle calculation for top position
                     float markerLength;
 
-                    // Vary marker length based on angle
                     if (angle == 0)
                     {
-                        markerLength = 15; // Longer marker for center
+                        markerLength = RADIUS * 0.1f;
                     }
                     else if (angle % 30 == 0)
                     {
-                        markerLength = 12; // Medium length for 30-degree marks
+                        markerLength = RADIUS * 0.08f;
                     }
                     else
                     {
-                        markerLength = 8;  // Short length for 10-degree marks
+                        markerLength = RADIUS * 0.05f;
                     }
 
-                    // Draw the marker line
-                    float x1 = CENTER_X - (float)((arcRadius - markerLength) * Math.Cos(radians));
-                    float y1 = CENTER_Y - (float)((arcRadius - markerLength) * Math.Sin(radians));
-                    float x2 = CENTER_X - (float)(arcRadius * Math.Cos(radians));
-                    float y2 = CENTER_Y - (float)(arcRadius * Math.Sin(radians));
+                    float x1 = CENTER_X + (float)((arcRADIUS - markerLength) * Math.Cos(radians));
+                    float y1 = CENTER_Y - (float)((arcRADIUS - markerLength) * Math.Sin(radians));
+                    float x2 = CENTER_X + (float)(arcRADIUS * Math.Cos(radians));
+                    float y2 = CENTER_Y - (float)(arcRADIUS * Math.Sin(radians));
                     g.DrawLine(pen, x1, y1, x2, y2);
 
-                    // Add labels for 30-degree markers
                     if (angle % 30 == 0 && angle != 0)
                     {
-                        using (var font = new Font("Arial", 8))
+                        using (var font = new Font("Arial", Math.Max(RADIUS / 25f, 10f), FontStyle.Regular))
                         {
                             string text = Math.Abs(angle).ToString();
-                            float textX = CENTER_X - (float)((arcRadius - markerLength - 15) * Math.Cos(radians)) - 8;
-                            float textY = CENTER_Y - (float)((arcRadius - markerLength - 15) * Math.Sin(radians)) - 6;
+                            float textWidth = g.MeasureString(text, font).Width;
+                            float textHeight = font.Height;
+                            float textX = CENTER_X + (float)((arcRADIUS - markerLength - RADIUS * 0.15f) * Math.Cos(radians)) - textWidth / 2;
+                            float textY = CENTER_Y - (float)((arcRADIUS - markerLength - RADIUS * 0.15f) * Math.Sin(radians)) - textHeight / 2;
                             g.DrawString(text, font, Brushes.Wheat, textX, textY);
                         }
                     }
                 }
 
-                // Draw small triangle at top center (0 degrees)
-                float[] triangleXPoints = {
+                // Draw the moving roll indicator (triangle) at the top
+                float triangleSize = RADIUS * 0.05f;
+                double rollRadians = (roll + 90) * Math.PI / 180; // Adjusted for top position
+
+                float triangleCenterX = CENTER_X + (float)(arcRADIUS * Math.Cos(rollRadians));
+                float triangleCenterY = CENTER_Y - (float)(arcRADIUS * Math.Sin(rollRadians));
+
+                // Calculate triangle points
+                PointF[] trianglePoints = new PointF[3];
+
+                // Point at the tip of the triangle (pointing towards center)
+                double tipAngle = rollRadians + Math.PI; // Point towards center
+                trianglePoints[0] = new PointF(
+                    triangleCenterX + (float)(triangleSize * Math.Cos(tipAngle)),
+                    triangleCenterY - (float)(triangleSize * Math.Sin(tipAngle))
+                );
+
+                // Base points of the triangle
+                double leftAngle = rollRadians - Math.PI / 2;
+                double rightAngle = rollRadians + Math.PI / 2;
+
+                trianglePoints[1] = new PointF(
+                    triangleCenterX + (float)(triangleSize * Math.Cos(leftAngle)),
+                    triangleCenterY - (float)(triangleSize * Math.Sin(leftAngle))
+                );
+
+                trianglePoints[2] = new PointF(
+                    triangleCenterX + (float)(triangleSize * Math.Cos(rightAngle)),
+                    triangleCenterY - (float)(triangleSize * Math.Sin(rightAngle))
+                );
+
+                // Draw the triangle
+                using (var brush = new SolidBrush(Color.Yellow))
+                {
+                    g.FillPolygon(brush, trianglePoints);
+                }
+            
+
+
+            // Draw small triangle at top center (0 degrees)
+            float[] triangleXPoints = {
         CENTER_X,
         CENTER_X - 8,
         CENTER_X + 8
     };
                 float[] triangleYPoints = {
-        CENTER_Y - arcRadius + 2,
-        CENTER_Y - arcRadius + 15,
-        CENTER_Y - arcRadius + 15
+        CENTER_Y - arcRADIUS + 2,
+        CENTER_Y - arcRADIUS + 15,
+        CENTER_Y - arcRADIUS + 15
     };
                 g.FillPolygon(Brushes.Red, new PointF[] {
         new PointF(triangleXPoints[0], triangleYPoints[0]),
         new PointF(triangleXPoints[1], triangleYPoints[1]),
         new PointF(triangleXPoints[2], triangleYPoints[2])
     });
-            }
 
+            }
             // Draw roll indicator
             //float rollRadians = (-roll + 90) * (float)Math.PI / 180; // Offset by 90 to center at top
             //using (var pen = new Pen(Color.Yellow, 3))
             //{
-            //    int indicatorRadius = RADIUS - 20;
-            //    float x = CENTER_X + (float)(indicatorRadius * Math.Cos(rollRadians));
-            //    float y = CENTER_Y + (float)(indicatorRadius * Math.Sin(rollRadians));
-            //    g.DrawLine(pen, CENTER_X, CENTER_Y - indicatorRadius, x, y);
+            //    int indicatorRADIUS = RADIUS - 20;
+            //    float x = CENTER_X + (float)(indicatorRADIUS * Math.Cos(rollRadians));
+            //    float y = CENTER_Y + (float)(indicatorRADIUS * Math.Sin(rollRadians));
+            //    g.DrawLine(pen, CENTER_X, CENTER_Y - indicatorRADIUS, x, y);
             //}
 
             //Draw roll indicator
@@ -241,7 +280,7 @@ namespace HUD_Claude
             //}
 
             // Draw pitch arc at the top
-            //using (var pen = new Pen(Color.White, 2))
+            //using (var pen = new Pen(Color.Wheat, 2))
             //{
             //    // Draw the main arc
             //    g.DrawArc(pen, CENTER_X - 30, CENTER_Y - RADIUS - 30, 60, 60, 0, 180);

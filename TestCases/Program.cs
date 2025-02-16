@@ -4,14 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace HUD_Claude
+namespace TestCases
 {
     internal static class Program
     {
-        //dotnet pack --configuration Release /p:PackageVersion=1.2.0
-        //dotnet nuget push bin\Release\YourProjectName.1.2.0.nupkg --source https://api.nuget.org/v3/index.json --api-key YourApiKey
 
-        // nuget API Key oy2iyzzpxpbo5j4bje3ah7c6bnnpswjunpuer7hgowyayu
+
+
+        //New test cases add flightinstruments.dll file into SErbC2I for detail testing
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -20,10 +21,7 @@ namespace HUD_Claude
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm()
-            {
-
-            });
+            Application.Run(new Form1());
         }
     }
 }

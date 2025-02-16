@@ -266,7 +266,7 @@ namespace HUD_Claude
                 float padding = radius / 30f;
 
                 g.DrawString(pitchText, font, Brushes.Wheat, padding, padding);
-                g.DrawString(rollText, font, Brushes.Wheat, padding+180f, padding );
+                g.DrawString(rollText, font, Brushes.Wheat, Width-70, padding );
             }
         }
         
@@ -282,7 +282,7 @@ namespace HUD_Claude
             Invalidate();
         }
     }
-
+    
     [Browsable(false)]
     public float Roll
     {

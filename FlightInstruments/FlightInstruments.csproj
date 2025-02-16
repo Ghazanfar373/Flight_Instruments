@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Title>Flight Instruments</Title>
+    <Authors>Ghazanfar Ali</Authors>
+    <Description>Avionics Flight UI controls to build ground control station or simulate any Aero models in C#</Description>
+    <PackageIcon>iconSerb.png</PackageIcon>
+    <AssemblyVersion>1.0.5</AssemblyVersion>
+    <Version>1.3.5</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="D:\Icons Store\iconSerb.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="9.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Windows.Forms.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="CompassControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="HorizonIndicator.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+  </ItemGroup>
+
+</Project>
