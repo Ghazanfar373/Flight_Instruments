@@ -106,8 +106,9 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 Special thanks to the aviation community for providing guidance on instrument accuracy and design standards.
 
 ## Screenshots
-
-[https://github.com/Ghazanfar373/Flight_Instruments/tree/master/images/compass.jpg][https://github.com/Ghazanfar373/Flight_Instruments/blob/master/images/Hud_Compass.jpg][https://github.com/Ghazanfar373/Flight_Instruments/blob/master/images/horizontal.jpg]
+### Artificial Horizon
+![Artificial Horizon Control](images/compass.jpg)
+![HUD with Compass](images/Hud_Compass.jpg)
 
 ## Contact
 
