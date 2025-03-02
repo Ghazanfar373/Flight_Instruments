@@ -42,7 +42,6 @@ namespace TestCases
             }
            
             compassControl1.Heading = roll;
-
             horizonIndicator1.Pitch = pitch;
             horizonIndicator1.Roll = roll;
             return base.ProcessCmdKey(ref msg, keyData);

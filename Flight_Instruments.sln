@@ -11,12 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCases", "TestCases\Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightInstrument_Net48", "FlightInstrument_Net48\FlightInstrument_Net48.csproj", "{996ADC6C-2587-46CD-8AD6-CCD71FAFB0E1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{DA61CA54-70EF-4394-A382-6E2CDE72A347}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\..\Pictures\compass.jpg = ..\..\..\Pictures\compass.jpg
-		..\..\..\Pictures\horizontal.jpg = ..\..\..\Pictures\horizontal.jpg
-		..\..\..\Pictures\Hud_Compass.jpg = ..\..\..\Pictures\Hud_Compass.jpg
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TopographySRTM", "TopographySRTM\TopographySRTM.csproj", "{12FE7986-679A-4484-B5CA-4527AA2ABD00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,6 +35,10 @@ Global
 		{996ADC6C-2587-46CD-8AD6-CCD71FAFB0E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{996ADC6C-2587-46CD-8AD6-CCD71FAFB0E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{996ADC6C-2587-46CD-8AD6-CCD71FAFB0E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12FE7986-679A-4484-B5CA-4527AA2ABD00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12FE7986-679A-4484-B5CA-4527AA2ABD00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12FE7986-679A-4484-B5CA-4527AA2ABD00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12FE7986-679A-4484-B5CA-4527AA2ABD00}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

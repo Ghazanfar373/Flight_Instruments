@@ -5,7 +5,6 @@ using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
 namespace HUD_Claude
-
 {
     [ToolboxItem(true)]
     public partial class CompassControl : UserControl
@@ -15,7 +14,6 @@ namespace HUD_Claude
         private float _targetHeading = 0f;
         private const float ANIMATION_STEP = 5f;
         private const float PLANE_SIZE = 40f;
-
         [Description("Current heading of the compass in degrees")]
         public float Heading
         {
@@ -69,7 +67,7 @@ namespace HUD_Claude
 
             Invalidate();
         }
-
+        //Iphone 16 Pro Max
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -90,21 +88,22 @@ namespace HUD_Claude
             g.TranslateTransform(-centerX, -centerY);
 
             // Draw rotating compass elements
-            // Draw compass circle
+            // Draw compass circle 
             using (Pen circlePen = new Pen(Color.Wheat, 2))
             {
                 g.DrawEllipse(circlePen, centerX - radius, centerY - radius, radius * 2, radius * 2);
             }
-
+            //
             // Draw degree markers
             using (Pen markerPen = new Pen(Color.Wheat, 1))
             using (Pen majorMarkerPen = new Pen(Color.Wheat, 2))
             using (Font degreeFont = new Font("Arial", 8))
             {
                 for (int degree = 0; degree < 360; degree += 5)
+
                 {
                     float angle = degree * (float)Math.PI / 180;
-                    bool isMajor = degree % 30 == 0;
+                    bool  isMajor = degree % 30 == 0;
                     float markerLength = isMajor ? 15 : 10;
 
                     PointF start = new PointF(
@@ -114,7 +113,7 @@ namespace HUD_Claude
                     PointF end = new PointF(
                         centerX + radius * (float)Math.Sin(angle),
                         centerY - radius * (float)Math.Cos(angle)
-                    );
+                    ); //degree painfull instance
 
                     g.DrawLine(isMajor ? majorMarkerPen : markerPen, start, end);
 
@@ -137,7 +136,7 @@ namespace HUD_Claude
                 string[] cardinals = { "N", "E", "S", "W" };
                 float[] angles = { 0, 90, 180, 270 };
 
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 4; i++)                        
                 {
                     float angle = angles[i] * (float)Math.PI / 180;
                     PointF textPoint = new PointF(

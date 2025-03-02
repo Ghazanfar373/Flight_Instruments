@@ -42,7 +42,6 @@
             this.compassControl1.Name = "compassControl1";
             this.compassControl1.Size = new System.Drawing.Size(307, 295);
             this.compassControl1.TabIndex = 0;
-            this.compassControl1.Text = "compassControl1";
             // 
             // horizonIndicator1
             // 
