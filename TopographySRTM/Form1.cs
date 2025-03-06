@@ -16,7 +16,7 @@ namespace TopographySRTM
         //string srcFile = "C:\\Users\\Ghazanfar\\Downloads\\rasters_SRTMGL1Ellip\\output_SRTMGL1Ellip.tif";
         //string tmpFile = "C:\\Users\\Ghazanfar\\Downloads\\rasters_SRTMGL1Ellip\\resampledtif.tif";
         //string destFile = "C:\\Users\\Ghazanfar\\Downloads\\rasters_SRTMGL1Ellip\\tiftosrtm.hgt";
-
+        //Topography metioned above
 
         string srcFile = "C:\\Users\\Ghazanfar\\Downloads\\viz\\output_SRTMGL1Ellip.tif";
         string tmpFile = "C:\\Users\\Ghazanfar\\Downloads\\viz\\resampledEllip_hillshade.tif";
@@ -25,7 +25,7 @@ namespace TopographySRTM
         {
             InitializeComponent();
 
-            //Gdal.AllRegister();
+            Gdal.AllRegister();
         }
 
         private void buttonConvert_Click(object sender, EventArgs e)
