@@ -9,7 +9,9 @@ namespace HUD_Claude
 {
     [ToolboxItem(true)]
     public partial class CompassControl : Control
-    {
+    {   
+
+          
         private float _heading = 0f;
         private Timer _animationTimer;
         private float _targetHeading = 0f;
@@ -150,6 +152,20 @@ namespace HUD_Claude
 
             // Restore original transform
             g.Transform = originalTransform;
+            //Draw Responsive airplane in center of compass
+            float airplaneLength = radius * 0.55F;
+            float airplaneWidth = radius * 0.28F;
+            PointF[] airplanePoints = new PointF[]
+                {
+                new PointF(centerX, centerY - airplaneLength), // Nose
+                new PointF(centerX-airplaneLength/2, centerY + airplaneLength * 0.25F),
+                new PointF(centerX , centerY + airplaneLength * 0.10F), // Left wing
+                new PointF(centerX + airplaneLength / 2, centerY + airplaneLength * 0.25F),
+                new PointF(centerX, centerY - airplaneLength*0.45f) // top fold midway
+
+                };
+
+
 
             // Draw fixed airplane in center (not affected by rotation)
             float[] airplaneXPoints = {
@@ -166,11 +182,11 @@ namespace HUD_Claude
                 centerY - radius + 120   // Right wing
             };
 
-            PointF[] airplanePoints = new PointF[4];
-            for (int i = 0; i < 4; i++)
-            {
-                airplanePoints[i] = new PointF(airplaneXPoints[i], airplaneYPoints[i]);
-            }
+            //PointF[] airplanePoints = new PointF[4];
+            //for (int i = 0; i < 4; i++)
+            //{
+            //    airplanePoints[i] = new PointF(airplaneXPoints[i], airplaneYPoints[i]);
+            //}
 
             // Draw the paper airplane
             g.FillPolygon(Brushes.Red, airplanePoints);

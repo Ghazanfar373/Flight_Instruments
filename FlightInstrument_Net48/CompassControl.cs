@@ -149,27 +149,20 @@ namespace HUD_Claude
 
             // Restore original transform
             g.Transform = originalTransform;
+            //Draw Responsive airplane in center of compass
+            float airplaneLength = radius * 0.25f;
+            float airplaneWidth = radius * 0.28f;
+            PointF[] airplanePoints = new PointF[]
+                {
+                new PointF(centerX, centerY - airplaneLength), // Nose
+                new PointF(centerX-airplaneWidth/2, centerY + airplaneLength * 0.25f),
+                new PointF(centerX , centerY + airplaneLength * 0.10f), // Left wing
+                new PointF(centerX + airplaneWidth / 2, centerY + airplaneLength * 0.25f),
+                new PointF(centerX, centerY - airplaneLength*0.95f) // top fold midway
 
-            // Draw fixed airplane in center (not affected by rotation)
-            float[] airplaneXPoints = {
-                centerX,              // Nose
-                centerX - PLANE_SIZE, // Left wing
-                centerX,              // Middle
-                centerX + PLANE_SIZE  // Right wing
-            };
-
-            float[] airplaneYPoints = {
-                centerY - radius + 70,  // Nose
-                centerY - radius + 120,  // Left wing
-                centerY - radius + 105,  // Middle
-                centerY - radius + 120   // Right wing
-            };
-
-            PointF[] airplanePoints = new PointF[4];
-            for (int i = 0; i < 4; i++)
-            {
-                airplanePoints[i] = new PointF(airplaneXPoints[i], airplaneYPoints[i]);
-            }
+                };
+            
+          
 
             // Draw the paper airplane
             g.FillPolygon(Brushes.Red, airplanePoints);

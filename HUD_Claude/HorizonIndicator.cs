@@ -258,24 +258,25 @@ namespace HUD_Claude
             }
 
             // Replace the pitch/roll value display section with:
-            // Draw values with improved scaled font
+            // Draw values with improved scaled 
             using (var font = new Font("Arial", Math.Max(radius / 20f, 10f), FontStyle.Bold))
             {
                 string pitchText = $"Pitch: {pitch:F1}°";
                 string rollText = $"Roll: {roll:F1}°";
                 float padding = radius / 30f;
-
+                //ho ter sari shuhrtain hai ye dua .... 
                 g.DrawString(pitchText, font, Brushes.Wheat, padding, padding);
                 g.DrawString(rollText, font, Brushes.Wheat, padding+180f, padding );
             }
         }
         
-
-        // Optional: Add properties for pitch and roll if you need to access them from outside + font.Height * 1.2f
-    [Browsable(false)]
-    public float Pitch
-    {
-        get { return pitch; }
+    
+    //Optional: Add properties for pitch and roll if you need to access them from outside + font.Height * 1.2f
+    [Browsable(false)] //Visa Task 90%, Claim Task 90%, Insurance Task 0%, Car Maintenance Task 0%, 
+    //How they survive     
+    public float Pitch 
+    {  
+            get { return pitch; }
         set 
         { 
             pitch = Math.Max(Math.Min(value, 90), -90);

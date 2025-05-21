@@ -96,6 +96,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HUD_Claude\Flight_Instruments.csproj">
+      <Project>{609246EB-6FB8-4B55-8F10-97AD9335A6DA}</Project>
+      <Name>Flight_Instruments</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\GDAL.Native.3.10.0\build\netstandard2.0\GDAL.Native.targets" Condition="Exists('..\packages\GDAL.Native.3.10.0\build\netstandard2.0\GDAL.Native.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
