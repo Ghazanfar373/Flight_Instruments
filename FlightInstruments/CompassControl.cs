@@ -167,26 +167,8 @@ namespace HUD_Claude
 
 
 
-            // Draw fixed airplane in center (not affected by rotation)
-            float[] airplaneXPoints = {
-                centerX,              // Nose
-                centerX - PLANE_SIZE, // Left wing
-                centerX,              // Middle
-                centerX + PLANE_SIZE  // Right wing
-            };
-
-            float[] airplaneYPoints = {
-                centerY - radius + 70,  // Nose
-                centerY - radius + 120,  // Left wing
-                centerY - radius + 105,  // Middle
-                centerY - radius + 120   // Right wing
-            };
-
-            //PointF[] airplanePoints = new PointF[4];
-            //for (int i = 0; i < 4; i++)
-            //{
-            //    airplanePoints[i] = new PointF(airplaneXPoints[i], airplaneYPoints[i]);
-            //}
+            
+            
 
             // Draw the paper airplane
             g.FillPolygon(Brushes.Red, airplanePoints);
