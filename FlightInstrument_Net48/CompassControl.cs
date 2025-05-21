@@ -119,7 +119,7 @@ namespace HUD_Claude
 
                     if (isMajor)
                     {
-                        string degreeText = degree.ToString();
+                        string degreeText = (degree/10).ToString();
                         SizeF textSize = g.MeasureString(degreeText, degreeFont);
                         PointF textPoint = new PointF(
                             centerX + (radius - 30) * (float)Math.Sin(angle) - textSize.Width / 2,
@@ -135,9 +135,11 @@ namespace HUD_Claude
             {
                 string[] cardinals = { "N", "E", "S", "W" };
                 float[] angles = { 0, 90, 180, 270 };
+               
 
                 for (int i = 0; i < 4; i++)                        
                 {
+                   
                     float angle = angles[i] * (float)Math.PI / 180;
                     PointF textPoint = new PointF(
                         centerX + (radius - 45) * (float)Math.Sin(angle) - 8,
@@ -160,11 +162,11 @@ namespace HUD_Claude
                 new PointF(centerX + airplaneWidth / 2, centerY + airplaneLength * 0.25f),
                 new PointF(centerX, centerY - airplaneLength*0.95f) // top fold midway
 
-                };
+            };
             
           
 
-            // Draw the paper airplane
+            //
             g.FillPolygon(Brushes.Red, airplanePoints);
             using (Pen outlinePen = new Pen(Color.DarkRed, 1))
             {
