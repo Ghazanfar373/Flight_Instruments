@@ -51,14 +51,14 @@
             this.horizonIndicator1.Name = "horizonIndicator1";
             this.horizonIndicator1.Pitch = 0F;
             this.horizonIndicator1.Roll = 0F;
-            this.horizonIndicator1.Size = new System.Drawing.Size(250, 250);
+            this.horizonIndicator1.Size = new System.Drawing.Size(200, 200);
             this.horizonIndicator1.TabIndex = 6;
             // 
             // hudControl1
             // 
             this.hudControl1.Location = new System.Drawing.Point(12, 27);
             this.hudControl1.Name = "hudControl1";
-            this.hudControl1.Size = new System.Drawing.Size(407, 398);
+            this.hudControl1.Size = new System.Drawing.Size(405, 390);
             this.hudControl1.TabIndex = 4;
             // 
             // compassControl1
@@ -66,9 +66,9 @@
             this.compassControl1.BackColor = System.Drawing.Color.Black;
             this.compassControl1.ForeColor = System.Drawing.Color.White;
             this.compassControl1.Heading = 0F;
-            this.compassControl1.Location = new System.Drawing.Point(872, 295);
+            this.compassControl1.Location = new System.Drawing.Point(872, 306);
             this.compassControl1.Name = "compassControl1";
-            this.compassControl1.Size = new System.Drawing.Size(250, 250);
+            this.compassControl1.Size = new System.Drawing.Size(223, 198);
             this.compassControl1.TabIndex = 0;
             this.compassControl1.Text = "compassControl1";
             // 
@@ -76,9 +76,9 @@
             // 
             this.compassControl2.BackColor = System.Drawing.Color.Black;
             this.compassControl2.Heading = 0F;
-            this.compassControl2.Location = new System.Drawing.Point(514, 79);
+            this.compassControl2.Location = new System.Drawing.Point(514, 189);
             this.compassControl2.Name = "compassControl2";
-            this.compassControl2.Size = new System.Drawing.Size(327, 326);
+            this.compassControl2.Size = new System.Drawing.Size(258, 216);
             this.compassControl2.TabIndex = 7;
             this.compassControl2.Text = "compassControl2";
             // 
