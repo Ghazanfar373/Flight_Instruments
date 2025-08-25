@@ -38,6 +38,10 @@ namespace HUD_Claude
             // Set transparent background
             BackColor = Color.Transparent;
             Size = new Size(200, 200);
+
+            // Enable focus for keyboard input
+            SetStyle(ControlStyles.Selectable, true);
+            TabStop = true;
         }
 
         protected override CreateParams CreateParams
@@ -58,6 +62,12 @@ namespace HUD_Claude
             radius = Math.Max(minDimension / 2 - 10, 50); // Minimum radius of 50
             center = new Point(Width / 2, Height / 2);
             Invalidate();
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+            HorizonIndicator_KeyDown(this, e);
         }
 
         private void HorizonIndicator_KeyDown(object sender, KeyEventArgs e)
@@ -86,13 +96,15 @@ namespace HUD_Claude
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            // Don't paint background - keeps it transparent
-            // base.OnPaintBackground(e);
+            // Clear the background properly for transparency
+            e.Graphics.Clear(Color.Transparent);
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             Graphics g = e.Graphics;
+
+            // Use original working graphics settings
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
 
@@ -115,9 +127,9 @@ namespace HUD_Claude
                 g.SetClip(path);
             }
 
-            // Draw sky and ground with semi-transparency for better blending
-            using (var skyBrush = new SolidBrush(Color.FromArgb(200, Color.CornflowerBlue)))
-            using (var groundBrush = new SolidBrush(Color.FromArgb(200, Color.SandyBrown)))
+            // Draw sky and ground - back to original opacity
+            using (var skyBrush = new SolidBrush(Color.CornflowerBlue))
+            using (var groundBrush = new SolidBrush(Color.LightGreen))
             {
                 int rectSize = radius * 3;
                 g.FillRectangle(skyBrush, -rectSize, -rectSize - pitchOffset, rectSize * 2, rectSize * 2);
@@ -125,13 +137,13 @@ namespace HUD_Claude
             }
 
             // Draw pitch lines with responsive scaling
-            using (var pen = new Pen(Color.Wheat, penWidthScale))
+            using (var pen = new Pen(Color.White, penWidthScale))
             {
                 float longLine = radius * 0.4f;
                 float shortLine = radius * 0.2f;
 
                 // Draw horizon line (thicker)
-                using (var horizonPen = new Pen(Color.Wheat, penWidthScale * 2))
+                using (var horizonPen = new Pen(Color.White, penWidthScale * 2))
                 {
                     g.DrawLine(horizonPen, -radius, -pitchOffset, radius, -pitchOffset);
                 }
@@ -154,11 +166,9 @@ namespace HUD_Claude
                             var textSize = g.MeasureString(text, font);
                             float textOffset = lineLength + paddingScale;
 
-                            // Draw text with outline for better visibility
-                            DrawOutlinedText(g, text, font, Brushes.Wheat, Brushes.Black,
-                                -textOffset - textSize.Width, y - textSize.Height / 2, 1);
-                            DrawOutlinedText(g, text, font, Brushes.Wheat, Brushes.Black,
-                                textOffset, y - textSize.Height / 2, 1);
+                            // Draw simple white text
+                            g.DrawString(text, font, Brushes.White, -textOffset - textSize.Width, y - textSize.Height / 2);
+                            g.DrawString(text, font, Brushes.White, textOffset, y - textSize.Height / 2);
                         }
                     }
                 }
@@ -168,7 +178,7 @@ namespace HUD_Claude
             g.Restore(state);
 
             // Draw outer circle with responsive thickness
-            using (var pen = new Pen(Color.Wheat, penWidthScale))
+            using (var pen = new Pen(Color.White, penWidthScale))
             {
                 g.DrawEllipse(pen, center.X - radius, center.Y - radius, radius * 2, radius * 2);
             }
@@ -177,7 +187,7 @@ namespace HUD_Claude
             DrawRollScale(g);
 
             // Draw fixed aircraft reference with responsive scaling
-            using (var pen = new Pen(Color.Yellow, Math.Max(penWidthScale, 2f)))
+            using (var pen = new Pen(Color.Red, Math.Max(penWidthScale, 2f)))
             {
                 float refSize = refSizeScale;
                 g.DrawLine(pen, center.X - refSize, center.Y, center.X - refSize * 0.3f, center.Y);
@@ -191,7 +201,7 @@ namespace HUD_Claude
 
         private void DrawRollScale(Graphics g)
         {
-            using (var pen = new Pen(Color.Wheat, penWidthScale))
+            using (var pen = new Pen(Color.White, penWidthScale))
             {
                 int arcRadius = radius - (int)(radius * 0.1f);
 
@@ -224,7 +234,7 @@ namespace HUD_Claude
                             float textX = center.X + (float)((arcRadius - markerLength - radius * 0.15f) * Math.Cos(radians)) - textSize.Width / 2;
                             float textY = center.Y - (float)((arcRadius - markerLength - radius * 0.15f) * Math.Sin(radians)) - textSize.Height / 2;
 
-                            DrawOutlinedText(g, text, font, Brushes.Wheat, Brushes.Black, textX, textY, 1);
+                            g.DrawString(text, font, Brushes.White, textX, textY);
                         }
                     }
                 }
@@ -268,8 +278,8 @@ namespace HUD_Claude
             );
 
             // Draw triangle with outline for better visibility
-            using (var brush = new SolidBrush(Color.Yellow))
-            using (var pen = new Pen(Color.Black, 1f))
+            using (var brush = new SolidBrush(Color.Red))
+            using (var pen = new Pen(Color.Red, 1f))
             {
                 g.FillPolygon(brush, trianglePoints);
                 g.DrawPolygon(pen, trianglePoints);
@@ -285,8 +295,8 @@ namespace HUD_Claude
                 new PointF(center.X + triangleSize, center.Y - arcRadius + triangleSize * 2)
             };
 
-            using (var brush = new SolidBrush(Color.Red))
-            using (var pen = new Pen(Color.Black, 1f))
+            using (var brush = new SolidBrush(Color.Yellow))
+            using (var pen = new Pen(Color.Wheat, 1f))
             {
                 g.FillPolygon(brush, centerTriangle);
                 g.DrawPolygon(pen, centerTriangle);
@@ -314,25 +324,37 @@ namespace HUD_Claude
             g.DrawString(text, font, textBrush, x, y);
         }
 
-        [Browsable(false)]
+        [Browsable(true)]
+        [Category("Attitude")]
+        [Description("Pitch angle in degrees (-90 to +90)")]
         public float Pitch
         {
             get { return pitch; }
             set
             {
-                pitch = Math.Max(Math.Min(value, 90), -90);
-                Invalidate();
+                float newValue = Math.Max(Math.Min(value, 90), -90);
+                if (Math.Abs(pitch - newValue) > 0.01f) // Only invalidate if changed
+                {
+                    pitch = newValue;
+                    Invalidate();
+                }
             }
         }
 
-        [Browsable(false)]
+        [Browsable(true)]
+        [Category("Attitude")]
+        [Description("Roll angle in degrees (-180 to +180)")]
         public float Roll
         {
             get { return roll; }
             set
             {
-                roll = Math.Max(Math.Min(value, 180), -180);
-                Invalidate();
+                float newValue = Math.Max(Math.Min(value, 180), -180);
+                if (Math.Abs(roll - newValue) > 0.01f) // Only invalidate if changed
+                {
+                    roll = newValue;
+                    Invalidate();
+                }
             }
         }
     }

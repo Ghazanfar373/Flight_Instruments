@@ -32,8 +32,8 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
-            this.compassControl1 = new HUD_Claude.CompassControl();
             this.horizonIndicator1 = new HUD_Claude.HorizonIndicator();
+            this.compassControl1 = new HUD_Claude.CompassControl();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -63,23 +63,23 @@
             this.toolStripProgressBar1.Name = "toolStripProgressBar1";
             this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 28);
             // 
-            // compassControl1
-            // 
-            this.compassControl1.Heading = 0F;
-            this.compassControl1.Location = new System.Drawing.Point(197, 154);
-            this.compassControl1.Name = "compassControl1";
-            this.compassControl1.Size = new System.Drawing.Size(99, 100);
-            this.compassControl1.TabIndex = 1;
-            // 
             // horizonIndicator1
             // 
             this.horizonIndicator1.BackColor = System.Drawing.Color.Transparent;
-            this.horizonIndicator1.Location = new System.Drawing.Point(466, 144);
+            this.horizonIndicator1.Location = new System.Drawing.Point(518, 79);
             this.horizonIndicator1.Name = "horizonIndicator1";
             this.horizonIndicator1.Pitch = 0F;
             this.horizonIndicator1.Roll = 0F;
-            this.horizonIndicator1.Size = new System.Drawing.Size(160, 146);
+            this.horizonIndicator1.Size = new System.Drawing.Size(120, 120);
             this.horizonIndicator1.TabIndex = 2;
+            // 
+            // compassControl1
+            // 
+            this.compassControl1.Heading = 0F;
+            this.compassControl1.Location = new System.Drawing.Point(512, 207);
+            this.compassControl1.Name = "compassControl1";
+            this.compassControl1.Size = new System.Drawing.Size(120, 120);
+            this.compassControl1.TabIndex = 1;
             // 
             // Form1
             // 
