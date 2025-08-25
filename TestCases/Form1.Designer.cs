@@ -66,19 +66,19 @@
             // horizonIndicator1
             // 
             this.horizonIndicator1.BackColor = System.Drawing.Color.Transparent;
-            this.horizonIndicator1.Location = new System.Drawing.Point(518, 79);
+            this.horizonIndicator1.Location = new System.Drawing.Point(539, 95);
             this.horizonIndicator1.Name = "horizonIndicator1";
             this.horizonIndicator1.Pitch = 0F;
             this.horizonIndicator1.Roll = 0F;
-            this.horizonIndicator1.Size = new System.Drawing.Size(120, 120);
+            this.horizonIndicator1.Size = new System.Drawing.Size(150, 150);
             this.horizonIndicator1.TabIndex = 2;
             // 
             // compassControl1
             // 
             this.compassControl1.Heading = 0F;
-            this.compassControl1.Location = new System.Drawing.Point(512, 207);
+            this.compassControl1.Location = new System.Drawing.Point(539, 275);
             this.compassControl1.Name = "compassControl1";
-            this.compassControl1.Size = new System.Drawing.Size(120, 120);
+            this.compassControl1.Size = new System.Drawing.Size(110, 110);
             this.compassControl1.TabIndex = 1;
             // 
             // Form1

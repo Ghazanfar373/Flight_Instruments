@@ -17,14 +17,15 @@ namespace HUD_Claude
         private float roll = 0;
         private int radius;
         private Point center;
-        private const float PITCH_SCALING = 4;
+        // Mission Planner standard pitch scaling
+        private float PITCH_SCALING => this.Height / 100f;
 
-        // Responsive scaling factors
-        private float penWidthScale => radius / 100f;
-        private float fontSizeScale => Math.Max(radius / 25f, 8f);
-        private float triangleSizeScale => radius * 0.05f;
-        private float refSizeScale => radius * 0.3f;
-        private float paddingScale => radius / 30f;
+        // Responsive scaling factors optimized for 120x120 size
+        private float penWidthScale => Math.Max(radius / 80f, 1f);
+        private float fontSizeScale => Math.Max(radius / 20f, 6f);
+        private float triangleSizeScale => radius * 0.08f;
+        private float refSizeScale => radius * 0.35f;
+        private float paddingScale => Math.Max(radius / 25f, 2f);
 
         public HorizonIndicator()
         {
@@ -37,7 +38,7 @@ namespace HUD_Claude
 
             // Set transparent background
             BackColor = Color.Transparent;
-            Size = new Size(200, 200);
+            Size = new Size(120, 120);
 
             // Enable focus for keyboard input
             SetStyle(ControlStyles.Selectable, true);
@@ -57,9 +58,9 @@ namespace HUD_Claude
         protected override void OnSizeChanged(EventArgs e)
         {
             base.OnSizeChanged(e);
-            // Calculate new radius and center based on control size with better scaling
+            // Calculate new radius and center based on control size optimized for smaller size
             int minDimension = Math.Min(Width, Height);
-            radius = Math.Max(minDimension / 2 - 10, 50); // Minimum radius of 50
+            radius = Math.Max(minDimension / 2 - 8, 40); // Reduced padding and minimum radius for 120x120
             center = new Point(Width / 2, Height / 2);
             Invalidate();
         }
@@ -129,7 +130,7 @@ namespace HUD_Claude
 
             // Draw sky and ground - back to original opacity
             using (var skyBrush = new SolidBrush(Color.CornflowerBlue))
-            using (var groundBrush = new SolidBrush(Color.LightGreen))
+            using (var groundBrush = new SolidBrush(Color.Green))
             {
                 int rectSize = radius * 3;
                 g.FillRectangle(skyBrush, -rectSize, -rectSize - pitchOffset, rectSize * 2, rectSize * 2);
@@ -142,11 +143,11 @@ namespace HUD_Claude
                 float longLine = radius * 0.4f;
                 float shortLine = radius * 0.2f;
 
-                // Draw horizon line (thicker)
-                using (var horizonPen = new Pen(Color.White, penWidthScale * 2))
-                {
-                    g.DrawLine(horizonPen, -radius, -pitchOffset, radius, -pitchOffset);
-                }
+                //// Draw horizon line (thicker) at the actual horizon position
+                //using (var horizonPen = new Pen(Color.White, penWidthScale * 2))
+                //{
+                //    g.DrawLine(horizonPen, -radius, pitchOffset, radius, pitchOffset);
+                //}
 
                 // Draw pitch reference lines
                 for (int i = -90; i <= 90; i += 10)
@@ -278,8 +279,8 @@ namespace HUD_Claude
             );
 
             // Draw triangle with outline for better visibility
-            using (var brush = new SolidBrush(Color.Red))
-            using (var pen = new Pen(Color.Red, 1f))
+            using (var brush = new SolidBrush(Color.Yellow))
+            using (var pen = new Pen(Color.YellowGreen, 1f))
             {
                 g.FillPolygon(brush, trianglePoints);
                 g.DrawPolygon(pen, trianglePoints);
@@ -295,8 +296,8 @@ namespace HUD_Claude
                 new PointF(center.X + triangleSize, center.Y - arcRadius + triangleSize * 2)
             };
 
-            using (var brush = new SolidBrush(Color.Yellow))
-            using (var pen = new Pen(Color.Wheat, 1f))
+            using (var brush = new SolidBrush(Color.Red))
+            using (var pen = new Pen(Color.Red, 1f))
             {
                 g.FillPolygon(brush, centerTriangle);
                 g.DrawPolygon(pen, centerTriangle);
