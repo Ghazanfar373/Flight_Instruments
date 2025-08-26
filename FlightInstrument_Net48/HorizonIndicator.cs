@@ -12,66 +12,102 @@ namespace HUD_Claude
 {
     [ToolboxItem(true)]
     public partial class HorizonIndicator : UserControl
-{
-    private float pitch = 0;
-    private float roll = 0;
-    //private Timer updateTimer;
-    private int radius;
-    private Point center;
-    private const float PITCH_SCALING = 4;
-
-    public HorizonIndicator()
     {
+        private float pitch = 0;
+        private float roll = 0;
+        private int radius;
+        private Point center;
+        // Mission Planner standard pitch scaling
+        private float PITCH_SCALING => this.Height / 100f;
+
+        // Responsive scaling factors optimized for 120x120 size
+        private float penWidthScale => Math.Max(radius / 80f, 1f);
+        private float fontSizeScale => Math.Max(radius / 20f, 6f);
+        private float triangleSizeScale => radius * 0.08f;
+        private float refSizeScale => radius * 0.35f;
+        private float paddingScale => Math.Max(radius / 25f, 2f);
+
+        public HorizonIndicator()
+        {
             SetStyle(ControlStyles.DoubleBuffer |
                         ControlStyles.UserPaint |
                         ControlStyles.AllPaintingInWmPaint |
-                        ControlStyles.ResizeRedraw,
+                        ControlStyles.ResizeRedraw |
+                        ControlStyles.SupportsTransparentBackColor,
                         true);
-            Size = new Size(200, 200);
 
-            
+            // Set transparent background
+            BackColor = Color.Transparent;
+            Size = new Size(120, 120);
+
+            // Enable focus for keyboard input
+            SetStyle(ControlStyles.Selectable, true);
+            TabStop = true;
         }
 
-    protected override void OnSizeChanged(EventArgs e)
-    {
-        base.OnSizeChanged(e);
-        // Calculate new radius and center based on control size
-        radius = Math.Min(Width, Height) / 2 - 10;
-        center = new Point(Width / 2, Height / 2);
-        Invalidate();
-    }
-
-    private void HorizonIndicator_KeyDown(object sender, KeyEventArgs e)
-    {
-        switch (e.KeyCode)
+        protected override CreateParams CreateParams
         {
-            case Keys.Up:
-                pitch = Math.Min(pitch + 5, 90);
-                break;
-            case Keys.Down:
-                pitch = Math.Max(pitch - 5, -90);
-                break;
-            case Keys.Left:
-                roll = Math.Max(roll - 5, -180);
-                break;
-            case Keys.Right:
-                roll = Math.Min(roll + 5, 180);
-                break;
-            case Keys.Space:
-                pitch = 0;
-                roll = 0;
-                break;
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= 0x00000020; // WS_EX_TRANSPARENT
+                return cp;
+            }
         }
-        Invalidate();
-    }
 
+        protected override void OnSizeChanged(EventArgs e)
+        {
+            base.OnSizeChanged(e);
+            // Calculate new radius and center based on control size optimized for smaller size
+            int minDimension = Math.Min(Width, Height);
+            radius = Math.Max(minDimension / 2 - 8, 40); // Reduced padding and minimum radius for 120x120
+            center = new Point(Width / 2, Height / 2);
+            Invalidate();
+        }
 
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+            HorizonIndicator_KeyDown(this, e);
+        }
+
+        private void HorizonIndicator_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Up:
+                    pitch = Math.Min(pitch + 5, 90);
+                    break;
+                case Keys.Down:
+                    pitch = Math.Max(pitch - 5, -90);
+                    break;
+                case Keys.Left:
+                    roll = Math.Max(roll - 5, -180);
+                    break;
+                case Keys.Right:
+                    roll = Math.Min(roll + 5, 180);
+                    break;
+                case Keys.Space:
+                    pitch = 0;
+                    roll = 0;
+                    break;
+            }
+            Invalidate();
+        }
+
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            // Clear the background properly for transparency
+            e.Graphics.Clear(Color.Transparent);
+        }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             Graphics g = e.Graphics;
+
+            // Use original working graphics settings
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            g.Clear(Color.Transparent);
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
 
             // Save state
             var state = g.Save();
@@ -83,7 +119,7 @@ namespace HUD_Claude
             g.RotateTransform(-roll);
 
             // Calculate pitch offset
-            float pitchOffset = pitch * PITCH_SCALING;
+            float pitchOffset = -pitch * PITCH_SCALING;
 
             // Create clip region for horizon mask
             using (var path = new System.Drawing.Drawing2D.GraphicsPath())
@@ -92,27 +128,27 @@ namespace HUD_Claude
                 g.SetClip(path);
             }
 
-            // Draw sky and ground
+            // Draw sky and ground - back to original opacity
             using (var skyBrush = new SolidBrush(Color.CornflowerBlue))
-            using (var groundBrush = new SolidBrush(Color.SandyBrown))
+            using (var groundBrush = new SolidBrush(Color.Green))
             {
-                // Scale rectangle size based on radius
                 int rectSize = radius * 3;
                 g.FillRectangle(skyBrush, -rectSize, -rectSize - pitchOffset, rectSize * 2, rectSize * 2);
                 g.FillRectangle(groundBrush, -rectSize, -pitchOffset, rectSize * 2, rectSize * 2);
             }
 
-            // Draw pitch lines                                
-            using (var pen = new Pen(Color.Wheat, radius / 75f))
+            // Draw pitch lines with responsive scaling
+            using (var pen = new Pen(Color.White, penWidthScale))
             {
-                // Scale line lengths based on radius
                 float longLine = radius * 0.4f;
                 float shortLine = radius * 0.2f;
 
-                // Draw horizon line
-                g.DrawLine(pen, -radius, -pitchOffset, radius, -pitchOffset);
+                //// Draw horizon line (thicker) at the actual horizon position
+                //using (var horizonPen = new Pen(Color.White, penWidthScale * 2))
+                //{
+                //    g.DrawLine(horizonPen, -radius, pitchOffset, radius, pitchOffset);
+                //}
 
-                // Replace the pitch line font drawing section with:
                 // Draw pitch reference lines
                 for (int i = -90; i <= 90; i += 10)
                 {
@@ -124,13 +160,16 @@ namespace HUD_Claude
                         float lineLength = (i % 30 == 0) ? longLine : shortLine;
                         g.DrawLine(pen, -lineLength, y, lineLength, y);
 
-                        // Improved font scaling for pitch numbers
-                        using (var font = new Font("Arial", Math.Max(radius / 25f, 10f), FontStyle.Regular))
+                        // Responsive font scaling for pitch numbers
+                        using (var font = new Font("Arial", fontSizeScale, FontStyle.Regular))
                         {
                             string text = Math.Abs(i).ToString();
-                            float textWidth = g.MeasureString(text, font).Width;
-                            g.DrawString(text, font, Brushes.Wheat, -lineLength - textWidth - 5, y - font.Height / 2);
-                            g.DrawString(text, font, Brushes.Wheat, lineLength + 5, y - font.Height / 2);
+                            var textSize = g.MeasureString(text, font);
+                            float textOffset = lineLength + paddingScale;
+
+                            // Draw simple white text
+                            g.DrawString(text, font, Brushes.White, -textOffset - textSize.Width, y - textSize.Height / 2);
+                            g.DrawString(text, font, Brushes.White, textOffset, y - textSize.Height / 2);
                         }
                     }
                 }
@@ -139,159 +178,185 @@ namespace HUD_Claude
             // Restore graphics state
             g.Restore(state);
 
-            // Draw fixed elements
-            using (var pen = new Pen(Color.Wheat, radius / 75f))
+            // Draw outer circle with responsive thickness
+            using (var pen = new Pen(Color.White, penWidthScale))
             {
                 g.DrawEllipse(pen, center.X - radius, center.Y - radius, radius * 2, radius * 2);
             }
 
-            // Replace the roll indicator arc and marker drawing section with:
-            using (var pen = new Pen(Color.Wheat, radius / 75f))
+            // Draw roll scale and indicator with responsive scaling
+            DrawRollScale(g);
+
+            // Draw fixed aircraft reference with responsive scaling
+            using (var pen = new Pen(Color.Red, Math.Max(penWidthScale, 2f)))
             {
-                int arcradius = radius - radius / 10;
-
-                // Draw the fixed roll arc and markers at the top (changed from 210,120 to 30,120)
-                //g.DrawArc(pen, center.X - arcradius, center.Y - arcradius, arcradius * 2, arcradius * 2, 30, 120);
-
-                // Draw the fixed markers on the arc, adjusted angles for top position
-                for (int angle = -60; angle <= 60; angle += 10)
-                {
-                    double radians = (-angle + 90) * Math.PI / 180; // Changed angle calculation for top position
-                    float markerLength;
-
-                    if (angle == 0)
-                    {
-                        markerLength = radius * 0.1f;
-                    }
-                    else if (angle % 30 == 0)
-                    {
-                        markerLength = radius * 0.08f;
-                    }
-                    else
-                    {
-                        markerLength = radius * 0.05f;
-                    }
-
-                    float x1 = center.X + (float)((arcradius - markerLength) * Math.Cos(radians));
-                    float y1 = center.Y - (float)((arcradius - markerLength) * Math.Sin(radians));
-                    float x2 = center.X + (float)(arcradius * Math.Cos(radians));
-                    float y2 = center.Y - (float)(arcradius * Math.Sin(radians));
-                    g.DrawLine(pen, x1, y1, x2, y2);
-
-                    if (angle % 30 == 0 && angle != 0)
-                    {
-                        using (var font = new Font("Arial", Math.Max(radius / 25f, 8f), FontStyle.Regular))
-                        {
-                            string text = Math.Abs(angle).ToString();
-                            float textWidth = g.MeasureString(text, font).Width;
-                            float textHeight = font.Height;
-                            float textX = center.X + (float)((arcradius - markerLength - radius * 0.15f) * Math.Cos(radians)) - textWidth / 2;
-                            float textY = center.Y - (float)((arcradius - markerLength - radius * 0.15f) * Math.Sin(radians)) - textHeight / 2;
-                            g.DrawString(text, font, Brushes.Wheat, textX, textY);
-                        }
-                    }
-                }
-
-                // Draw the moving roll indicator (triangle) at the top
-                float triangleSize = radius * 0.05f;
-                double rollRadians = (roll + 90) * Math.PI / 180; // Adjusted for top position
-
-                float triangleCenterX = center.X + (float)(arcradius * Math.Cos(rollRadians));
-                float triangleCenterY = center.Y - (float)(arcradius * Math.Sin(rollRadians));
-
-                // Calculate triangle points
-                PointF[] trianglePoints = new PointF[3];
-
-                // Point at the tip of the triangle (pointing towards center)
-                double tipAngle = rollRadians + Math.PI; // Point towards center
-                trianglePoints[0] = new PointF(
-                    triangleCenterX + (float)(triangleSize * Math.Cos(tipAngle)),
-                    triangleCenterY - (float)(triangleSize * Math.Sin(tipAngle))
-                );
-
-                // Base points of the triangle
-                double leftAngle = rollRadians - Math.PI / 2;
-                double rightAngle = rollRadians + Math.PI / 2;
-
-                trianglePoints[1] = new PointF(
-                    triangleCenterX + (float)(triangleSize * Math.Cos(leftAngle)),
-                    triangleCenterY - (float)(triangleSize * Math.Sin(leftAngle))
-                );
-
-                trianglePoints[2] = new PointF(
-                    triangleCenterX + (float)(triangleSize * Math.Cos(rightAngle)),
-                    triangleCenterY - (float)(triangleSize * Math.Sin(rightAngle))
-                );
-
-                // Draw the triangle
-                using (var brush = new SolidBrush(Color.Yellow))
-                {
-                    g.FillPolygon(brush, trianglePoints);
-                }
-
-                // Draw center triangle
-                //float triangleSize = radius * 0.05f;
-                float[] triangleXPoints = {
-                center.X,
-                center.X - triangleSize,
-                center.X + triangleSize
-            };
-                float[] triangleYPoints = {
-                center.Y - arcradius + 2,
-                center.Y - arcradius + triangleSize * 2,
-                center.Y - arcradius + triangleSize * 2
-            };
-                g.FillPolygon(Brushes.Red, new PointF[] {
-                new PointF(triangleXPoints[0], triangleYPoints[0]),
-                new PointF(triangleXPoints[1], triangleYPoints[1]),
-                new PointF(triangleXPoints[2], triangleYPoints[2])
-            });
-            }
-        
-            // Draw fixed aircraft reference
-            using (var pen = new Pen(Color.Yellow, radius / 50f))
-            {
-                float refSize = radius * 0.3f;
+                float refSize = refSizeScale;
                 g.DrawLine(pen, center.X - refSize, center.Y, center.X - refSize * 0.3f, center.Y);
                 g.DrawLine(pen, center.X + refSize * 0.3f, center.Y, center.X + refSize, center.Y);
                 g.DrawLine(pen, center.X, center.Y - refSize * 0.3f, center.X, center.Y + refSize * 0.3f);
             }
 
-            // Replace the pitch/roll value display section with:
-            // Draw values with improved scaled font
-            using (var font = new Font("Arial", Math.Max(radius / 20f, 10f), FontStyle.Bold))
-            {
-                string pitchText = $"Pitch: {pitch:F1}°";
-                string rollText = $"Roll: {roll:F1}°";
-                float padding = radius / 30f;
+            // Draw values with responsive font and positioning
+            DrawValueDisplay(g);
+        }
 
-                g.DrawString(pitchText, font, Brushes.Wheat, padding, padding);
-                g.DrawString(rollText, font, Brushes.Wheat, Width-70, padding );
+        private void DrawRollScale(Graphics g)
+        {
+            using (var pen = new Pen(Color.White, penWidthScale))
+            {
+                int arcRadius = radius - (int)(radius * 0.1f);
+
+                // Draw the fixed markers on the arc
+                for (int angle = -60; angle <= 60; angle += 10)
+                {
+                    double radians = (-angle + 90) * Math.PI / 180;
+                    float markerLength;
+
+                    if (angle == 0)
+                        markerLength = radius * 0.1f;
+                    else if (angle % 30 == 0)
+                        markerLength = radius * 0.08f;
+                    else
+                        markerLength = radius * 0.05f;
+
+                    float x1 = center.X + (float)((arcRadius - markerLength) * Math.Cos(radians));
+                    float y1 = center.Y - (float)((arcRadius - markerLength) * Math.Sin(radians));
+                    float x2 = center.X + (float)(arcRadius * Math.Cos(radians));
+                    float y2 = center.Y - (float)(arcRadius * Math.Sin(radians));
+                    g.DrawLine(pen, x1, y1, x2, y2);
+
+                    // Draw angle labels for major marks
+                    //if (angle % 30 == 0 && angle != 0)
+                    //{
+                    //    using (var font = new Font("Arial", fontSizeScale * 0.8f, FontStyle.Regular))
+                    //    {
+                    //        string text = Math.Abs(angle).ToString();
+                    //        var textSize = g.MeasureString(text, font);
+                    //        float textX = center.X + (float)((arcRadius - markerLength - radius * 0.15f) * Math.Cos(radians)) - textSize.Width / 2;
+                    //        float textY = center.Y - (float)((arcRadius - markerLength - radius * 0.15f) * Math.Sin(radians)) - textSize.Height / 2;
+
+                    //        g.DrawString(text, font, Brushes.White, textX, textY);
+                    //    }
+                    //}
+                }
+
+                // Draw the moving roll indicator (triangle)
+                DrawRollIndicator(g, arcRadius);
+
+                // Draw center reference triangle
+                DrawCenterTriangle(g, arcRadius);
             }
         }
-        
 
-        // Optional: Add properties for pitch and roll if you need to access them from outside + font.Height * 1.2f
-    [Browsable(false)]
-    public float Pitch
-    {
-        get { return pitch; }
-        set 
-        { 
-            pitch = Math.Max(Math.Min(value, 90), -90);
-            Invalidate();
+        private void DrawRollIndicator(Graphics g, int arcRadius)
+        {
+            float triangleSize = triangleSizeScale;
+            double rollRadians = (roll + 90) * Math.PI / 180;
+
+            float triangleCenterX = center.X + (float)(arcRadius * Math.Cos(rollRadians));
+            float triangleCenterY = center.Y - (float)(arcRadius * Math.Sin(rollRadians));
+
+            // Calculate triangle points
+            PointF[] trianglePoints = new PointF[3];
+            double tipAngle = rollRadians + Math.PI;
+
+            trianglePoints[0] = new PointF(
+                triangleCenterX + (float)(triangleSize * Math.Cos(tipAngle)),
+                triangleCenterY - (float)(triangleSize * Math.Sin(tipAngle))
+            );
+
+            double leftAngle = rollRadians - Math.PI / 2;
+            double rightAngle = rollRadians + Math.PI / 2;
+
+            trianglePoints[1] = new PointF(
+                triangleCenterX + (float)(triangleSize * Math.Cos(leftAngle)),
+                triangleCenterY - (float)(triangleSize * Math.Sin(leftAngle))
+            );
+
+            trianglePoints[2] = new PointF(
+                triangleCenterX + (float)(triangleSize * Math.Cos(rightAngle)),
+                triangleCenterY - (float)(triangleSize * Math.Sin(rightAngle))
+            );
+
+            // Draw triangle with outline for better visibility
+            using (var brush = new SolidBrush(Color.Yellow))
+            using (var pen = new Pen(Color.YellowGreen, 1f))
+            {
+                g.FillPolygon(brush, trianglePoints);
+                g.DrawPolygon(pen, trianglePoints);
+            }
+        }
+
+        private void DrawCenterTriangle(Graphics g, int arcRadius)
+        {
+            float triangleSize = triangleSizeScale;
+            PointF[] centerTriangle = {
+                new PointF(center.X, center.Y - arcRadius + 2),
+                new PointF(center.X - triangleSize, center.Y - arcRadius + triangleSize * 2),
+                new PointF(center.X + triangleSize, center.Y - arcRadius + triangleSize * 2)
+            };
+
+            using (var brush = new SolidBrush(Color.Red))
+            using (var pen = new Pen(Color.Red, 1f))
+            {
+                g.FillPolygon(brush, centerTriangle);
+                g.DrawPolygon(pen, centerTriangle);
+            }
+        }
+
+        private void DrawValueDisplay(Graphics g)
+        {
+            // Value display removed - clean instrument look
+        }
+
+        private void DrawOutlinedText(Graphics g, string text, Font font, Brush textBrush,
+            Brush outlineBrush, float x, float y, int outlineWidth)
+        {
+            // Draw outline
+            for (int dx = -outlineWidth; dx <= outlineWidth; dx++)
+            {
+                for (int dy = -outlineWidth; dy <= outlineWidth; dy++)
+                {
+                    if (dx != 0 || dy != 0)
+                        g.DrawString(text, font, outlineBrush, x + dx, y + dy);
+                }
+            }
+            // Draw main text
+            g.DrawString(text, font, textBrush, x, y);
+        }
+
+        [Browsable(true)]
+        [Category("Attitude")]
+        [Description("Pitch angle in degrees (-90 to +90)")]
+        public float Pitch
+        {
+            get { return pitch; }
+            set
+            {
+                float newValue = Math.Max(Math.Min(value, 90), -90);
+                if (Math.Abs(pitch - newValue) > 0.01f) // Only invalidate if changed
+                {
+                    pitch = newValue;
+                    Invalidate();
+                }
+            }
+        }
+
+        [Browsable(true)]
+        [Category("Attitude")]
+        [Description("Roll angle in degrees (-180 to +180)")]
+        public float Roll
+        {
+            get { return roll; }
+            set
+            {
+                float newValue = Math.Max(Math.Min(value, 180), -180);
+                if (Math.Abs(roll - newValue) > 0.01f) // Only invalidate if changed
+                {
+                    roll = newValue;
+                    Invalidate();
+                }
+            }
         }
     }
-    
-    [Browsable(false)]
-    public float Roll
-    {
-        get { return roll; }
-        set 
-        { 
-            roll = Math.Max(Math.Min(value, 180), -180);
-            Invalidate();
-        }
-    }
-}
 }

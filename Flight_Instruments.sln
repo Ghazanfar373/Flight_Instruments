@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightInstruments", "Flight
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCases", "TestCases\TestCases.csproj", "{D9658D3E-71E8-42DA-8339-4640E6B8B61D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightInstrument_Net48", "FlightInstrument_Net48\FlightInstrument_Net48.csproj", "{996ADC6C-2587-46CD-8AD6-CCD71FAFB0E1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HUD_Claude", "FlightInstrument_Net48\HUD_Claude.csproj", "{996ADC6C-2587-46CD-8AD6-CCD71FAFB0E1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TopographySRTM", "TopographySRTM\TopographySRTM.csproj", "{12FE7986-679A-4484-B5CA-4527AA2ABD00}"
 EndProject

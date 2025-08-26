@@ -1,15 +1,16 @@
-﻿using System.Reflection;
+﻿using System.Resources;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("FlightInstrument_Net48")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("HUD_Claude")]
+[assembly: AssemblyDescription("Flight Instruments Library developed by Mr. Ghazanfar Ali")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("FlightInstrument_Net48")]
+[assembly: AssemblyProduct("HUD_Claude")]
 [assembly: AssemblyCopyright("Copyright ©  2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -29,5 +30,6 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.2.3.5")]
+[assembly: AssemblyFileVersion("1.2.3.5")]
+[assembly: NeutralResourcesLanguage("")]
