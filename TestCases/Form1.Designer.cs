@@ -32,8 +32,7 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
-            this.horizonIndicator1 = new HUD_Claude.HorizonIndicator();
-            this.compassControl1 = new HUD_Claude.CompassControl();
+            this.swarmHud1 = new HUD_Claude.SwarmHud();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -63,23 +62,12 @@
             this.toolStripProgressBar1.Name = "toolStripProgressBar1";
             this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 28);
             // 
-            // horizonIndicator1
+            // swarmHud1
             // 
-            this.horizonIndicator1.BackColor = System.Drawing.Color.Transparent;
-            this.horizonIndicator1.Location = new System.Drawing.Point(539, 95);
-            this.horizonIndicator1.Name = "horizonIndicator1";
-            this.horizonIndicator1.Pitch = 0F;
-            this.horizonIndicator1.Roll = 0F;
-            this.horizonIndicator1.Size = new System.Drawing.Size(150, 150);
-            this.horizonIndicator1.TabIndex = 2;
-            // 
-            // compassControl1
-            // 
-            this.compassControl1.Heading = 0F;
-            this.compassControl1.Location = new System.Drawing.Point(539, 275);
-            this.compassControl1.Name = "compassControl1";
-            this.compassControl1.Size = new System.Drawing.Size(110, 110);
-            this.compassControl1.TabIndex = 1;
+            this.swarmHud1.Location = new System.Drawing.Point(116, 108);
+            this.swarmHud1.Name = "swarmHud1";
+            this.swarmHud1.Size = new System.Drawing.Size(132, 291);
+            this.swarmHud1.TabIndex = 3;
             // 
             // Form1
             // 
@@ -87,8 +75,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.ClientSize = new System.Drawing.Size(768, 442);
-            this.Controls.Add(this.horizonIndicator1);
-            this.Controls.Add(this.compassControl1);
+            this.Controls.Add(this.swarmHud1);
             this.Controls.Add(this.toolStrip1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -104,8 +91,7 @@
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
-        private HUD_Claude.CompassControl compassControl1;
-        private HUD_Claude.HorizonIndicator horizonIndicator1;
+        private HUD_Claude.SwarmHud swarmHud1;
     }
 }
 

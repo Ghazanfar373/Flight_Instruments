@@ -35,7 +35,7 @@ namespace HUD_Claude
                     true);
 
             _animationTimer = new Timer();
-            _animationTimer.Interval = 50;
+            _animationTimer.Interval = 25;
             _animationTimer.Tick += AnimationTimer_Tick;
             Size = new Size(200, 200);
         }
