@@ -41,9 +41,10 @@ namespace TestCases
                     break;
             }
            
-           swarmHud1.Pitch= pitch; swarmHud1.Roll= roll;
+            swarmHud1.Pitch= pitch; swarmHud1.Roll= roll;
             swarmHud1.Heading= roll;
             swarmHud1.VehicleName = "Plane 2";
+            horizonIndicator21.Pitch=pitch; horizonIndicator21.Roll= roll;
             
             
            

@@ -61,6 +61,12 @@
     <Compile Include="CompassControl.Designer.cs">
       <DependentUpon>CompassControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="HorizonIndicator2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="HorizonIndicator2.Designer.cs">
+      <DependentUpon>HorizonIndicator2.cs</DependentUpon>
+    </Compile>
     <Compile Include="HorizonIndicator.cs">
       <SubType>UserControl</SubType>
     </Compile>

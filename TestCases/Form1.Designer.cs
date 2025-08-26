@@ -33,6 +33,7 @@
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.swarmHud1 = new HUD_Claude.SwarmHud();
+            this.horizonIndicator21 = new HUD_Claude.HorizonIndicator2();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -64,10 +65,28 @@
             // 
             // swarmHud1
             // 
+            this.swarmHud1.ArmButtonEnabled = true;
+            this.swarmHud1.ArmButtonText = "Arm";
+            this.swarmHud1.Heading = 0F;
             this.swarmHud1.Location = new System.Drawing.Point(116, 108);
+            this.swarmHud1.LoiterButtonEnabled = true;
+            this.swarmHud1.LoiterButtonText = "Loiter";
             this.swarmHud1.Name = "swarmHud1";
+            this.swarmHud1.Pitch = 0F;
+            this.swarmHud1.Roll = 0F;
             this.swarmHud1.Size = new System.Drawing.Size(132, 291);
             this.swarmHud1.TabIndex = 3;
+            this.swarmHud1.VehicleName = "Vehicle 1";
+            // 
+            // horizonIndicator21
+            // 
+            this.horizonIndicator21.BackColor = System.Drawing.Color.Transparent;
+            this.horizonIndicator21.Location = new System.Drawing.Point(472, 64);
+            this.horizonIndicator21.Name = "horizonIndicator21";
+            this.horizonIndicator21.Pitch = 0F;
+            this.horizonIndicator21.Roll = 0F;
+            this.horizonIndicator21.Size = new System.Drawing.Size(207, 220);
+            this.horizonIndicator21.TabIndex = 4;
             // 
             // Form1
             // 
@@ -75,6 +94,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.ClientSize = new System.Drawing.Size(768, 442);
+            this.Controls.Add(this.horizonIndicator21);
             this.Controls.Add(this.swarmHud1);
             this.Controls.Add(this.toolStrip1);
             this.Name = "Form1";
@@ -92,6 +112,7 @@
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
         private HUD_Claude.SwarmHud swarmHud1;
+        private HUD_Claude.HorizonIndicator2 horizonIndicator21;
     }
 }
 

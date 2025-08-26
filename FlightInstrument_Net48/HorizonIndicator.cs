@@ -119,7 +119,7 @@ namespace HUD_Claude
             g.RotateTransform(-roll);
 
             // Calculate pitch offset
-            float pitchOffset = pitch * PITCH_SCALING;
+            float pitchOffset = -pitch * PITCH_SCALING;
 
             // Create clip region for horizon mask
             using (var path = new System.Drawing.Drawing2D.GraphicsPath())
@@ -226,18 +226,18 @@ namespace HUD_Claude
                     g.DrawLine(pen, x1, y1, x2, y2);
 
                     // Draw angle labels for major marks
-                    if (angle % 30 == 0 && angle != 0)
-                    {
-                        using (var font = new Font("Arial", fontSizeScale * 0.8f, FontStyle.Regular))
-                        {
-                            string text = Math.Abs(angle).ToString();
-                            var textSize = g.MeasureString(text, font);
-                            float textX = center.X + (float)((arcRadius - markerLength - radius * 0.15f) * Math.Cos(radians)) - textSize.Width / 2;
-                            float textY = center.Y - (float)((arcRadius - markerLength - radius * 0.15f) * Math.Sin(radians)) - textSize.Height / 2;
+                    //if (angle % 30 == 0 && angle != 0)
+                    //{
+                    //    using (var font = new Font("Arial", fontSizeScale * 0.8f, FontStyle.Regular))
+                    //    {
+                    //        string text = Math.Abs(angle).ToString();
+                    //        var textSize = g.MeasureString(text, font);
+                    //        float textX = center.X + (float)((arcRadius - markerLength - radius * 0.15f) * Math.Cos(radians)) - textSize.Width / 2;
+                    //        float textY = center.Y - (float)((arcRadius - markerLength - radius * 0.15f) * Math.Sin(radians)) - textSize.Height / 2;
 
-                            g.DrawString(text, font, Brushes.White, textX, textY);
-                        }
-                    }
+                    //        g.DrawString(text, font, Brushes.White, textX, textY);
+                    //    }
+                    //}
                 }
 
                 // Draw the moving roll indicator (triangle)
