@@ -55,6 +55,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="APStatusControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="APStatusControl.Designer.cs">
+      <DependentUpon>APStatusControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="CompassControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -89,6 +95,9 @@
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="APStatusControl.resx">
+      <DependentUpon>APStatusControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CompassControl.resx">
       <DependentUpon>CompassControl.cs</DependentUpon>
     </EmbeddedResource>

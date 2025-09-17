@@ -17,6 +17,11 @@ namespace HUD_Claude
         private float roll = 0;
         private int radius;
         private Point center;
+
+        // New properties for vehicle info
+        private string vehicleNumber = "V001";
+        private bool gpsStatus = true; // true = OK, false = BAD
+
         // Mission Planner standard pitch scaling
         private float PITCH_SCALING => this.Height / 100f;
 
@@ -25,7 +30,10 @@ namespace HUD_Claude
         private float fontSizeScale => Math.Max(radius / 20f, 6f);
         private float triangleSizeScale => radius * 0.08f;
         private float refSizeScale => radius * 0.35f;
-        private float paddingScale => Math.Max(radius / 25f, 2f);
+        private float paddingScale => Math.Max(radius / 30f, 1f);
+
+        // New scaling for status info
+        private float statusFontSizeScale => Math.Max(radius / 40f, 5f);
 
         public HorizonIndicator()
         {
@@ -37,22 +45,12 @@ namespace HUD_Claude
                         true);
 
             // Set transparent background
-            BackColor = Color.Transparent;
+            BackColor = Color.FromArgb(19, 19, 19);
             Size = new Size(120, 120);
 
             // Enable focus for keyboard input
             SetStyle(ControlStyles.Selectable, true);
             TabStop = true;
-        }
-
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                CreateParams cp = base.CreateParams;
-                cp.ExStyle |= 0x00000020; // WS_EX_TRANSPARENT
-                return cp;
-            }
         }
 
         protected override void OnSizeChanged(EventArgs e)
@@ -91,6 +89,15 @@ namespace HUD_Claude
                     pitch = 0;
                     roll = 0;
                     break;
+                // Test keys for vehicle info
+                case Keys.G:
+                    gpsStatus = !gpsStatus; // Toggle GPS status
+                    break;
+                case Keys.V:
+                    // Cycle vehicle number for testing
+                    int num = int.Parse(vehicleNumber.Substring(1));
+                    vehicleNumber = $"V{(num % 999) + 1:D3}";
+                    break;
             }
             Invalidate();
         }
@@ -98,7 +105,7 @@ namespace HUD_Claude
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             // Clear the background properly for transparency
-            e.Graphics.Clear(Color.Transparent);
+            e.Graphics.Clear(Color.FromArgb(19, 19, 19));
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -108,6 +115,9 @@ namespace HUD_Claude
             // Use original working graphics settings
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+
+            // Draw vehicle info in top corners FIRST (before any transformations)
+            DrawVehicleInfo(g);
 
             // Save state
             var state = g.Save();
@@ -142,12 +152,6 @@ namespace HUD_Claude
             {
                 float longLine = radius * 0.4f;
                 float shortLine = radius * 0.2f;
-
-                //// Draw horizon line (thicker) at the actual horizon position
-                //using (var horizonPen = new Pen(Color.White, penWidthScale * 2))
-                //{
-                //    g.DrawLine(horizonPen, -radius, pitchOffset, radius, pitchOffset);
-                //}
 
                 // Draw pitch reference lines
                 for (int i = -90; i <= 90; i += 10)
@@ -195,9 +199,46 @@ namespace HUD_Claude
                 g.DrawLine(pen, center.X + refSize * 0.3f, center.Y, center.X + refSize, center.Y);
                 g.DrawLine(pen, center.X, center.Y - refSize * 0.3f, center.X, center.Y + refSize * 0.3f);
             }
+        }
 
-            // Draw values with responsive font and positioning
-            DrawValueDisplay(g);
+        // New method to draw vehicle info in top corners
+        private void DrawVehicleInfo(Graphics g)
+        {
+            using (var font = new Font("Arial", statusFontSizeScale, FontStyle.Regular))
+            {
+                // Vehicle number - top left corner
+                string vehicleText = vehicleNumber;
+                var vehicleSize = g.MeasureString(vehicleText, font);
+                float vehiclePadding = paddingScale;
+
+                // Background rectangle for vehicle number
+                //using (var brush = new SolidBrush(Color.FromArgb(180, 0, 0, 0))) // Semi-transparent black
+                //{
+                //    g.FillRectangle(brush, vehiclePadding, vehiclePadding,
+                //                  vehicleSize.Width + paddingScale, vehicleSize.Height + paddingScale);
+                //}
+
+                g.DrawString(vehicleText, font, Brushes.White,
+                           vehiclePadding + paddingScale / 2, vehiclePadding + paddingScale / 2);
+
+                // GPS status - top right corner
+                string gpsText = gpsStatus ? "GPS OK" : "GPS BAD";
+                Color gpsColor = gpsStatus ? Color.Lime : Color.Red;
+                var gpsSize = g.MeasureString(gpsText, font);
+                float gpsX = Width - gpsSize.Width - vehiclePadding - paddingScale / 4;
+
+                // Background rectangle for GPS status
+                //using (var brush = new SolidBrush(Color.FromArgb(180, 0, 0, 0))) // Semi-transparent black
+                //{
+                //    g.FillRectangle(brush, gpsX - paddingScale / 2, vehiclePadding,
+                //                  gpsSize.Width + paddingScale, gpsSize.Height + paddingScale);
+                //}
+
+                using (var gpsBrush = new SolidBrush(gpsColor))
+                {
+                    g.DrawString(gpsText, font, gpsBrush, gpsX, vehiclePadding + paddingScale / 2);
+                }
+            }
         }
 
         private void DrawRollScale(Graphics g)
@@ -224,20 +265,6 @@ namespace HUD_Claude
                     float x2 = center.X + (float)(arcRadius * Math.Cos(radians));
                     float y2 = center.Y - (float)(arcRadius * Math.Sin(radians));
                     g.DrawLine(pen, x1, y1, x2, y2);
-
-                    // Draw angle labels for major marks
-                    //if (angle % 30 == 0 && angle != 0)
-                    //{
-                    //    using (var font = new Font("Arial", fontSizeScale * 0.8f, FontStyle.Regular))
-                    //    {
-                    //        string text = Math.Abs(angle).ToString();
-                    //        var textSize = g.MeasureString(text, font);
-                    //        float textX = center.X + (float)((arcRadius - markerLength - radius * 0.15f) * Math.Cos(radians)) - textSize.Width / 2;
-                    //        float textY = center.Y - (float)((arcRadius - markerLength - radius * 0.15f) * Math.Sin(radians)) - textSize.Height / 2;
-
-                    //        g.DrawString(text, font, Brushes.White, textX, textY);
-                    //    }
-                    //}
                 }
 
                 // Draw the moving roll indicator (triangle)
@@ -304,27 +331,7 @@ namespace HUD_Claude
             }
         }
 
-        private void DrawValueDisplay(Graphics g)
-        {
-            // Value display removed - clean instrument look
-        }
-
-        private void DrawOutlinedText(Graphics g, string text, Font font, Brush textBrush,
-            Brush outlineBrush, float x, float y, int outlineWidth)
-        {
-            // Draw outline
-            for (int dx = -outlineWidth; dx <= outlineWidth; dx++)
-            {
-                for (int dy = -outlineWidth; dy <= outlineWidth; dy++)
-                {
-                    if (dx != 0 || dy != 0)
-                        g.DrawString(text, font, outlineBrush, x + dx, y + dy);
-                }
-            }
-            // Draw main text
-            g.DrawString(text, font, textBrush, x, y);
-        }
-
+        // Existing properties
         [Browsable(true)]
         [Category("Attitude")]
         [Description("Pitch angle in degrees (-90 to +90)")]
@@ -334,7 +341,7 @@ namespace HUD_Claude
             set
             {
                 float newValue = Math.Max(Math.Min(value, 90), -90);
-                if (Math.Abs(pitch - newValue) > 0.01f) // Only invalidate if changed
+                if (Math.Abs(pitch - newValue) > 0.01f)
                 {
                     pitch = newValue;
                     Invalidate();
@@ -351,9 +358,42 @@ namespace HUD_Claude
             set
             {
                 float newValue = Math.Max(Math.Min(value, 180), -180);
-                if (Math.Abs(roll - newValue) > 0.01f) // Only invalidate if changed
+                if (Math.Abs(roll - newValue) > 0.01f)
                 {
                     roll = newValue;
+                    Invalidate();
+                }
+            }
+        }
+
+        // New properties for vehicle information
+        [Browsable(true)]
+        [Category("Vehicle Info")]
+        [Description("Vehicle identification number")]
+        public string VehicleNumber
+        {
+            get { return vehicleNumber; }
+            set
+            {
+                if (vehicleNumber != value)
+                {
+                    vehicleNumber = value ?? "V001";
+                    Invalidate();
+                }
+            }
+        }
+
+        [Browsable(true)]
+        [Category("Vehicle Info")]
+        [Description("GPS status - true for OK, false for BAD")]
+        public bool GpsStatus
+        {
+            get { return gpsStatus; }
+            set
+            {
+                if (gpsStatus != value)
+                {
+                    gpsStatus = value;
                     Invalidate();
                 }
             }

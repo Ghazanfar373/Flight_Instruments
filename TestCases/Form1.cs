@@ -43,7 +43,7 @@ namespace TestCases
            
             swarmHud1.Pitch= pitch; swarmHud1.Roll= roll;
             swarmHud1.Heading= roll;
-            swarmHud1.VehicleName = "Plane 2";
+            //swarmHud1.VehicleName = "Plane 2";
             horizonIndicator21.Pitch=pitch; horizonIndicator21.Roll= roll;
             
             
@@ -55,6 +55,41 @@ namespace TestCases
         private void horizonIndicator1_Load(object sender, EventArgs e)
         {
 
+        }
+        int counter = 0;
+        private void button1_Click(object sender, EventArgs e)
+        {
+            counter++;
+
+            switch (counter) {
+            
+                case 1:
+                    swarmHud1.isArm = true;
+                    swarmHud1.ApMode = "STABILIZE";
+                    break; 
+                case 2:
+                    swarmHud1.isArm = true;
+                    swarmHud1.ApMode = "Manual";
+                    break;
+                    case 3:
+
+                    swarmHud1.isArm = true;
+                    swarmHud1.ApMode = "Guided";
+                    break;
+                    case 4:
+                    swarmHud1.isArm = true;
+                    swarmHud1.ApMode = "lOITER";
+                    counter = 0;
+                    break;
+                case 5:
+                    swarmHud1.isArm = true;
+                    swarmHud1.ApMode = "ALT_HOLD";
+                    counter = 0;
+                    break;
+            }
+
+            
+            
         }
     }
 }

@@ -57,14 +57,14 @@ namespace HUD_Claude
         /// <summary>
         /// Gets or sets the vehicle name/identifier
         /// </summary>
-        [Browsable(true)]
-        [Category("Vehicle Info")]
-        [Description("Vehicle name or identifier")]
-        public string VehicleName
-        {
-            get { return labelVehicle.Text; }
-            set { labelVehicle.Text = value; }
-        }
+        //[Browsable(true)]
+        //[Category("Vehicle Info")]
+        //[Description("Vehicle name or identifier")]
+        //public string VehicleName
+        //{
+        //    get { return labelVehicle.Text; }
+        //    set { labelVehicle.Text = value; }
+        //}
 
         /// <summary>
         /// Gets or sets the text for the Arm button
@@ -76,6 +76,40 @@ namespace HUD_Claude
         {
             get { return buttonArm.Text; }
             set { buttonArm.Text = value; }
+        }
+
+        [Browsable(true)]
+        [Category("Modes")]
+        [Description("Autopilot Mode")]
+        public string ApMode
+        {
+            get { return apStatusControl1.AutopilotMode; }
+            set { apStatusControl1.AutopilotMode = value; }
+        }
+        [Browsable(true)]
+        [Category("Arm")]
+        [Description("Arm Status")]
+        public bool isArm
+        {
+            get { return apStatusControl1.IsArmed; }
+            set { apStatusControl1.IsArmed = value; }
+        }
+        [Browsable(true)]
+        [Category("GPS")]
+        [Description("GPS Status")]
+        public bool GPS
+        {
+            get { return horizonIndicator1.GpsStatus; }
+            set { horizonIndicator1.GpsStatus = value; }
+        }
+
+        [Browsable(true)]
+        [Category("Vehicle")]
+        [Description("Vehicle Info")]
+        public string VehicleInfo
+        {
+            get { return horizonIndicator1.VehicleNumber; }
+            set { horizonIndicator1.VehicleNumber = value; }
         }
 
         /// <summary>
@@ -162,10 +196,10 @@ namespace HUD_Claude
         /// Gets direct access to the Vehicle label
         /// </summary>
         /// <returns>The Vehicle label control</returns>
-        public Label GetVehicleLabel()
-        {
-            return labelVehicle;
-        }
+        //public Label GetVehicleLabel()
+        //{
+        //    return labelVehicle;
+        //}
 
         /// <summary>
         /// Gets direct access to the Arm button
@@ -210,7 +244,7 @@ namespace HUD_Claude
         /// <param name="loiterEnabled">Whether loiter button should be enabled</param>
         public void UpdateVehicleInfo(string vehicleName, bool armEnabled = true, bool loiterEnabled = true)
         {
-            labelVehicle.Text = vehicleName;
+            //labelVehicle.Text = vehicleName;
             buttonArm.Enabled = armEnabled;
             buttonLoiter.Enabled = loiterEnabled;
         }

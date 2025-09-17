@@ -29,66 +29,34 @@
         private void InitializeComponent()
         {
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.horizonIndicator1 = new HUD_Claude.HorizonIndicator();
-            this.compassControl1 = new HUD_Claude.CompassControl();
-            this.labelVehicle = new System.Windows.Forms.Label();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.buttonArm = new System.Windows.Forms.Button();
             this.buttonLoiter = new System.Windows.Forms.Button();
+            this.horizonIndicator1 = new HUD_Claude.HorizonIndicator();
+            this.compassControl1 = new HUD_Claude.CompassControl();
+            this.apStatusControl1 = new HUD_Claude.APStatusControl();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // flowLayoutPanel1
             // 
-            this.flowLayoutPanel1.BackColor = System.Drawing.SystemColors.Desktop;
+            this.flowLayoutPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(19)))), ((int)(((byte)(19)))));
+            this.flowLayoutPanel1.Controls.Add(this.apStatusControl1);
             this.flowLayoutPanel1.Controls.Add(this.horizonIndicator1);
             this.flowLayoutPanel1.Controls.Add(this.compassControl1);
-            this.flowLayoutPanel1.Controls.Add(this.labelVehicle);
             this.flowLayoutPanel1.Controls.Add(this.flowLayoutPanel2);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(1, 3);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(1);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(128, 271);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(130, 278);
             this.flowLayoutPanel1.TabIndex = 0;
-            // 
-            // horizonIndicator1
-            // 
-            this.horizonIndicator1.BackColor = System.Drawing.Color.Transparent;
-            this.horizonIndicator1.Location = new System.Drawing.Point(3, 0);
-            this.horizonIndicator1.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
-            this.horizonIndicator1.Name = "horizonIndicator1";
-            this.horizonIndicator1.Pitch = 0F;
-            this.horizonIndicator1.Roll = 0F;
-            this.horizonIndicator1.Size = new System.Drawing.Size(120, 120);
-            this.horizonIndicator1.TabIndex = 0;
-            // 
-            // compassControl1
-            // 
-            this.compassControl1.Heading = 0F;
-            this.compassControl1.Location = new System.Drawing.Point(3, 120);
-            this.compassControl1.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
-            this.compassControl1.Name = "compassControl1";
-            this.compassControl1.Size = new System.Drawing.Size(120, 110);
-            this.compassControl1.TabIndex = 1;
-            // 
-            // labelVehicle
-            // 
-            this.flowLayoutPanel1.SetFlowBreak(this.labelVehicle, true);
-            this.labelVehicle.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelVehicle.ForeColor = System.Drawing.SystemColors.Control;
-            this.labelVehicle.Location = new System.Drawing.Point(3, 230);
-            this.labelVehicle.Name = "labelVehicle";
-            this.labelVehicle.Size = new System.Drawing.Size(120, 16);
-            this.labelVehicle.TabIndex = 2;
-            this.labelVehicle.Text = "Vehicle 1";
-            this.labelVehicle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // flowLayoutPanel2
             // 
             this.flowLayoutPanel2.Controls.Add(this.buttonArm);
             this.flowLayoutPanel2.Controls.Add(this.buttonLoiter);
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(1, 247);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(1, 253);
             this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(1);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(127, 22);
@@ -114,13 +82,45 @@
             this.buttonLoiter.Text = "Loiter";
             this.buttonLoiter.UseVisualStyleBackColor = true;
             // 
+            // horizonIndicator1
+            // 
+            
+            this.horizonIndicator1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
+            this.horizonIndicator1.Location = new System.Drawing.Point(3, 22);
+            this.horizonIndicator1.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.horizonIndicator1.Name = "horizonIndicator1";
+            this.horizonIndicator1.Pitch = 0F;
+            this.horizonIndicator1.Roll = 0F;
+            this.horizonIndicator1.Size = new System.Drawing.Size(120, 120);
+            this.horizonIndicator1.TabIndex = 0;
+            // 
+            // compassControl1
+            // 
+            this.compassControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(19)))), ((int)(((byte)(19)))));
+            this.compassControl1.Heading = 0F;
+            this.compassControl1.Location = new System.Drawing.Point(3, 142);
+            this.compassControl1.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.compassControl1.Name = "compassControl1";
+            this.compassControl1.Size = new System.Drawing.Size(120, 110);
+            this.compassControl1.TabIndex = 1;
+            // 
+            // apStatusControl1
+            // 
+            this.apStatusControl1.AutopilotMode = "MANUAL";
+            this.apStatusControl1.IsArmed = false;
+            this.apStatusControl1.Location = new System.Drawing.Point(0, 0);
+            this.apStatusControl1.Margin = new System.Windows.Forms.Padding(0);
+            this.apStatusControl1.Name = "apStatusControl1";
+            this.apStatusControl1.Size = new System.Drawing.Size(128, 22);
+            this.apStatusControl1.TabIndex = 2;
+            // 
             // SwarmHud
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.flowLayoutPanel1);
             this.Name = "SwarmHud";
-            this.Size = new System.Drawing.Size(132, 275);
+            this.Size = new System.Drawing.Size(131, 283);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -132,9 +132,9 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private HorizonIndicator horizonIndicator1;
         private CompassControl compassControl1;
-        private System.Windows.Forms.Label labelVehicle;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.Button buttonArm;
         private System.Windows.Forms.Button buttonLoiter;
+        private APStatusControl apStatusControl1;
     }
 }
